@@ -1,0 +1,299 @@
+.portfolio-card {
+  --bg: var(--glass-bg);
+  --title-color-hover: var(--text-primary);
+  --text-color: var(--text-secondary);
+  --button-color: rgba(255, 255, 255, 0.08);
+  --button-color-hover: rgba(255, 255, 255, 0.15);
+  background: var(--bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 2rem;
+  padding: 0.5rem;
+  width: 20rem;
+  height: 30rem;
+  overflow: clip;
+  position: relative;
+  font-family: var(--font-body);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+[data-theme='light'] .portfolio-card {
+  --bg: #ffffff;
+  --title-color-hover: #0f172a;
+  --text-color: #475569;
+  --button-color: #f1f5f9;
+  --button-color-hover: #e2e8f0;
+}
+
+/* Glass gradient mask overlay */
+.portfolio-card::before {
+  content: "";
+  position: absolute;
+  width: calc(100% - 1rem);
+  height: 30%;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  mask: linear-gradient(#0000, #000f 80%);
+  -webkit-mask-image: linear-gradient(#0000, #000f 80%);
+  backdrop-filter: blur(1rem);
+  -webkit-backdrop-filter: blur(1rem);
+  border-radius: 0 0 1.5rem 1.5rem;
+  transform: translateY(0);
+  transition: transform 0.25s;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.portfolio-card > img {
+  max-width: 100%;
+  height: 20rem;
+  object-fit: cover;
+  object-position: 50% 5%;
+  border-radius: 1.5rem;
+  display: block;
+  transition: height 0.3s cubic-bezier(0.16, 1, 0.3, 1), object-position 0.5s ease;
+  width: 100%;
+}
+
+.portfolio-card > section {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  background: var(--bg);
+  border-radius: 0 0 1.5rem 1.5rem;
+  padding: 1.25rem;
+  height: 9rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: height 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+  z-index: 3;
+  overflow: hidden;
+}
+
+.portfolio-card h4 {
+  margin: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+  font-family: var(--font-display);
+  color: var(--title-color-hover);
+  transition: color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.portfolio-card p {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--text-color);
+  opacity: 0;
+  margin: 0;
+  transform: translateY(15px);
+  transition: opacity 0.3s ease 0.05s, transform 0.3s ease 0.05s;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.portfolio-card .pc-card-row {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+  padding-top: 0.5rem;
+  flex-shrink: 0;
+}
+
+.portfolio-card .pc-tag {
+  align-self: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-cyan);
+}
+
+.portfolio-card .pc-link-btn {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1.25rem 1.25rem 1.5rem 1.25rem;
+  font-size: 0.85rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  padding: 0.55rem 1.1rem;
+  background: var(--button-color);
+  transition: background 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+  color: var(--title-color-hover);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.portfolio-card .pc-link-btn:hover {
+  background: var(--button-color-hover);
+  border-color: var(--accent-cyan);
+}
+
+.portfolio-card .pc-link-btn .link-icon {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portfolio-card .pc-link-btn:hover .link-icon {
+  transform: translate(2px, -2px);
+}
+
+/* Hover States */
+.portfolio-card:hover,
+.portfolio-card:focus-within {
+  transform: translateY(-6px);
+  border-color: var(--glass-border-hover);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.portfolio-card:hover::before,
+.portfolio-card:focus-within::before {
+  transform: translateY(100%);
+}
+
+.portfolio-card:hover > img,
+.portfolio-card:focus-within > img {
+  height: 14.5rem;
+  object-position: 50% 10%;
+}
+
+.portfolio-card:hover > section,
+.portfolio-card:focus-within > section {
+  height: 14.5rem;
+}
+
+.portfolio-card:hover > section p,
+.portfolio-card:focus-within > section p {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.portfolio-card:hover > section .pc-card-row,
+.portfolio-card:focus-within > section .pc-card-row {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Responsive Overrides */
+@media (max-width: 768px) {
+  .portfolio-card {
+    height: auto;
+    width: 100%;
+    max-width: 22rem;
+  }
+  
+  .portfolio-card::before {
+    display: none;
+  }
+  
+  .portfolio-card > img {
+    height: 14.5rem;
+  }
+  
+  .portfolio-card > section {
+    position: relative;
+    height: auto !important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.25rem 1rem;
+  }
+  
+  .portfolio-card h4,
+  .portfolio-card p,
+  .portfolio-card .pc-card-row {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .portfolio-card .pc-card-row {
+    padding-top: 1rem;
+  }
+}
+
+/* ==================== PORTFOLIO SLIDER LAYOUT ==================== */
+.portfolio-slider-container {
+  width: 100%;
+  position: relative;
+  overflow: visible;
+}
+
+.portfolio-slider-track {
+  display: flex;
+  gap: 2.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  padding: 1.5rem 0.5rem; /* Room for card lift-up shadow on hover */
+  -webkit-overflow-scrolling: touch;
+}
+
+.portfolio-slider-track::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.portfolio-slide {
+  flex-shrink: 0;
+}
+
+/* Slider Arrow Navigation Buttons */
+.portfolio-slider-nav-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2.5rem;
+}
+
+.portfolio-slider-nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.slider-nav-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--glass-shadow);
+}
+
+.slider-nav-btn .arrow-icon {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slider-nav-btn:hover {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
+  transform: scale(1.05);
+}
+
+/* Hover translation animations for the arrows */
+.slider-nav-btn.prev-btn:hover .arrow-icon {
+  transform: translateX(-4px);
+}
+
+.slider-nav-btn.next-btn:hover .arrow-icon {
+  transform: translateX(4px);
+}
+
+.slider-nav-btn:active {
+  transform: scale(0.95);
+}
+
