@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Sun, Moon } from 'lucide-react';
+import logo from '../assets/logo.png';
 
 const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
   const [scrolled, setScrolled] = useState(false);
@@ -74,15 +75,17 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
         <div className="navbar">
           {/* Brand/Logo */}
           <a href="#home" className="navbar-brand" onClick={(e) => { e.preventDefault(); handleLinkClick('home'); }}>
-            <div className="logo-icon"></div>
-            <span className="brand-text">Nirmanam</span>
+            <div className="logo-icon">
+              <img src={logo} alt="Nirmanam Solutions Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+            <span className="brand-text">Nirmanam Solutions</span>
           </a>
 
           {/* Navigation Links */}
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a 
-                href="#home" 
+              <a
+                href="#home"
                 className={`nav-link ${activeLink === 'home' ? 'active' : ''}`}
                 onClick={(e) => { e.preventDefault(); handleLinkClick('home'); }}
               >
@@ -94,8 +97,8 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
               </a>
             </li>
             <li className="nav-item">
-              <a 
-                href="#about" 
+              <a
+                href="#about"
                 className={`nav-link ${activeLink === 'about' ? 'active' : ''}`}
                 onClick={(e) => { e.preventDefault(); handleLinkClick('about'); }}
               >
@@ -108,8 +111,8 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
               </a>
             </li>
             <li className="nav-item">
-              <a 
-                href="#services" 
+              <a
+                href="#services"
                 className={`nav-link ${activeLink === 'services' ? 'active' : ''}`}
                 onClick={(e) => { e.preventDefault(); handleLinkClick('services'); }}
               >
@@ -122,8 +125,8 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
               </a>
             </li>
             <li className="nav-item">
-              <a 
-                href="#portfolio" 
+              <a
+                href="#portfolio"
                 className={`nav-link ${activeLink === 'portfolio' ? 'active' : ''}`}
                 onClick={(e) => { e.preventDefault(); handleLinkClick('portfolio'); }}
               >
@@ -136,8 +139,8 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
               </a>
             </li>
             <li className="nav-item">
-              <a 
-                href="#process" 
+              <a
+                href="#process"
                 className={`nav-link ${activeLink === 'process' ? 'active' : ''}`}
                 onClick={(e) => { e.preventDefault(); handleLinkClick('process'); }}
               >
@@ -149,8 +152,8 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
               </a>
             </li>
             <li className="nav-item">
-              <a 
-                href="#contact" 
+              <a
+                href="#contact"
                 className={`nav-link ${activeLink === 'contact' ? 'active' : ''}`}
                 onClick={(e) => { e.preventDefault(); handleLinkClick('contact'); }}
               >
@@ -162,8 +165,8 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
               </a>
             </li>
             <li style={{ display: 'flex', alignItems: 'center', marginLeft: '10px' }}>
-              <button 
-                onClick={toggleTheme} 
+              <button
+                onClick={toggleTheme}
                 className="theme-toggle-btn desktop-only-theme"
                 aria-label="Toggle theme"
                 style={{ width: '34px', height: '34px', border: 'none', background: 'rgba(255,255,255,0.05)' }}
@@ -179,17 +182,17 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
           </ul>
 
           {/* Mobile Toggle */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <button 
-              onClick={toggleTheme} 
+          <div className="mobile-controls" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <button
+              onClick={toggleTheme}
               className="theme-toggle-btn mobile-only-theme"
               aria-label="Toggle theme"
               style={{ width: '38px', height: '38px', border: 'none', background: 'rgba(255,255,255,0.05)' }}
             >
               {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
             </button>
-            <button 
-              className={`mobile-toggle ${mobileMenuOpen ? 'active' : ''}`} 
+            <button
+              className={`mobile-toggle ${mobileMenuOpen ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle mobile navigation menu"
             >
@@ -204,7 +207,7 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
       </nav>
 
       {/* Mobile Menu Overlay */}
-      <div 
+      <div
         className={`mobile-menu-overlay ${mobileMenuOpen ? 'active' : ''}`}
         onClick={() => setMobileMenuOpen(false)}
       />
@@ -213,18 +216,20 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
       <div className={`mobile-menu ${mobileMenuOpen ? 'active' : ''}`}>
         <div className="mobile-menu-header">
           <a href="#home" className="mobile-menu-brand" onClick={(e) => { e.preventDefault(); handleLinkClick('home'); }}>
-            <div className="logo-icon"></div>
-            <span className="brand-text">Nirmanam</span>
+            <div className="logo-icon">
+              <img src={logo} alt="Nirmanam Solutions Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+            <span className="brand-text">Nirmanam Solutions</span>
           </a>
           <button className="mobile-menu-close" onClick={() => setMobileMenuOpen(false)}>
             <span>&times;</span>
           </button>
         </div>
-        
+
         <ul className="mobile-menu-nav">
           <li className="mobile-menu-item">
-            <a 
-              href="#home" 
+            <a
+              href="#home"
               className={`mobile-menu-link ${activeLink === 'home' ? 'active' : ''}`}
               onClick={(e) => { e.preventDefault(); handleLinkClick('home'); }}
             >
@@ -236,8 +241,8 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
             </a>
           </li>
           <li className="mobile-menu-item">
-            <a 
-              href="#about" 
+            <a
+              href="#about"
               className={`mobile-menu-link ${activeLink === 'about' ? 'active' : ''}`}
               onClick={(e) => { e.preventDefault(); handleLinkClick('about'); }}
             >
@@ -250,8 +255,8 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
             </a>
           </li>
           <li className="mobile-menu-item">
-            <a 
-              href="#services" 
+            <a
+              href="#services"
               className={`mobile-menu-link ${activeLink === 'services' ? 'active' : ''}`}
               onClick={(e) => { e.preventDefault(); handleLinkClick('services'); }}
             >
@@ -264,8 +269,8 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
             </a>
           </li>
           <li className="mobile-menu-item">
-            <a 
-              href="#portfolio" 
+            <a
+              href="#portfolio"
               className={`mobile-menu-link ${activeLink === 'portfolio' ? 'active' : ''}`}
               onClick={(e) => { e.preventDefault(); handleLinkClick('portfolio'); }}
             >
@@ -278,8 +283,8 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
             </a>
           </li>
           <li className="mobile-menu-item">
-            <a 
-              href="#process" 
+            <a
+              href="#process"
               className={`mobile-menu-link ${activeLink === 'process' ? 'active' : ''}`}
               onClick={(e) => { e.preventDefault(); handleLinkClick('process'); }}
             >
@@ -291,8 +296,8 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
             </a>
           </li>
           <li className="mobile-menu-item">
-            <a 
-              href="#contact" 
+            <a
+              href="#contact"
               className={`mobile-menu-link ${activeLink === 'contact' ? 'active' : ''}`}
               onClick={(e) => { e.preventDefault(); handleLinkClick('contact'); }}
             >
@@ -304,7 +309,7 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
             </a>
           </li>
         </ul>
-        
+
         <div className="mobile-cta">
           <button className="mobile-cta-button" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onLetsTalkClick(); }} style={{ border: 'none', cursor: 'pointer', display: 'block', width: '100%' }}>
             Let's Talk
