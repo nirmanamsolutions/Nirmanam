@@ -2,7 +2,7 @@
 
 ## The Problem
 Your contact form shows this error:
-> "Failed to send inquiry. Please try again or email us directly at contact@nirmanam.com"
+> "Failed to send inquiry. Please try again or email us directly at contact@Nirmanam Solutions.com"
 
 ## Why It's Happening
 Your `.env` file has **placeholder values** instead of real EmailJS credentials:

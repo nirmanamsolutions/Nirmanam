@@ -8,21 +8,32 @@ import HowWeWork from './components/HowWeWork';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ParticleCanvas from './animations/ParticleCanvas';
+import { ArrowUp } from 'lucide-react';
 
 function App() {
   // Read initial theme from localStorage or system preference
   const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem('nirmanam-theme');
+    const saved = localStorage.getItem('Nirmanam Solutions-theme');
     if (saved) return saved;
     const preference = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
     return preference;
   });
 
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
   useEffect(() => {
     // Set attribute on HTML root element
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('nirmanam-theme', theme);
+    localStorage.setItem('Nirmanam Solutions-theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
@@ -33,6 +44,13 @@ function App() {
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
   return (
@@ -53,6 +71,15 @@ function App() {
         <Contact />
       </main>
       <Footer />
+
+      {/* Scroll to Top Button */}
+      <button
+        onClick={scrollToTop}
+        className={`scroll-to-top ${showScrollTop ? 'visible' : ''}`}
+        aria-label="Scroll to top"
+      >
+        <ArrowUp size={20} />
+      </button>
     </>
   );
 }

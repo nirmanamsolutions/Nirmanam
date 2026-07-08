@@ -1,33 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import SplitText from '../animations/SplitText';
 import { ArrowRight } from 'lucide-react';
 import HoloCard from './HoloCard';
 
 const Hero = () => {
-  const [projectsCount, setProjectsCount] = useState(0);
-  const [clientsCount, setClientsCount] = useState(0);
-  const [teamCount, setTeamCount] = useState(0);
-  const [activeTab, setActiveTab] = useState('manifest');
-
-  useEffect(() => {
-    const animateValue = (start, end, duration, setValue) => {
-      let startTimestamp = null;
-      const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        setValue(Math.floor(progress * (end - start) + start));
-        if (progress < 1) {
-          window.requestAnimationFrame(step);
-        }
-      };
-      window.requestAnimationFrame(step);
-    };
-
-    animateValue(0, 5, 1500, setProjectsCount);
-    animateValue(0, 3, 1500, setClientsCount);
-    animateValue(0, 5, 1500, setTeamCount);
-  }, []);
 
   const handleScrollTo = (id) => {
     const el = document.getElementById(id);
@@ -87,26 +64,6 @@ const Hero = () => {
               <button onClick={() => handleScrollTo('process')} className="btn btn-ghost">
                 View Our Process
               </button>
-            </motion.div>
-
-            <motion.div
-              className="hero-stats"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-            >
-              <div className="stat">
-                <h3>{projectsCount}+</h3>
-                <p>Projects Delivered</p>
-              </div>
-              <div className="stat">
-                <h3>{clientsCount}+</h3>
-                <p>Happy Clients</p>
-              </div>
-              <div className="stat">
-                <h3>{teamCount}+</h3>
-                <p>Person Team</p>
-              </div>
             </motion.div>
           </motion.div>
 

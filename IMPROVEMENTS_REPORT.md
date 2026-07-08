@@ -359,7 +359,7 @@ OR
 Instead of: "We are a collective of software builders"
 
 Use: "Hi, I'm [Your Name]. After 5 years at [Company], 
-I started Nirmanam to help Indian startups build 
+I started Nirmanam Solutions to help Indian startups build 
 quality software without breaking the bank..."
 ```
 
@@ -483,7 +483,7 @@ Tertiary: "Read Case Studies"
 ✅ SSL certificate (HTTPS) - already have
 ✅ Privacy policy link in footer
 ✅ Business registration number
-✅ Professional email (@nirmanam.com, not @gmail.com)
+✅ Professional email (@Nirmanam Solutions.com, not @gmail.com)
 ✅ LinkedIn company page
 ✅ Google Business Profile
 ✅ Client NDA template available
