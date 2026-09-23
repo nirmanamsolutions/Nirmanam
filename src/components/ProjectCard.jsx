@@ -1,8 +1,9 @@
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
+import AiButton from './ui/ai-button';
 import './ProjectCard.css';
 
-const ProjectCard = ({ title, desc, tech, image, link = '#contact' }) => {
+const ProjectCard = ({ title, desc, tech, image, imageFit = 'cover', link = '#contact' }) => {
   const handleClick = () => {
     if (link && link !== '#contact') {
       window.open(link, '_blank', 'noopener,noreferrer');
@@ -17,7 +18,9 @@ const ProjectCard = ({ title, desc, tech, image, link = '#contact' }) => {
 
   return (
     <div className="portfolio-card">
-      <img src={image} alt={title} />
+      <div className={`pc-img-container ${imageFit === 'contain' ? 'fit-contain' : ''}`}>
+        <img src={image} alt={title} className="portfolio-card-img" />
+      </div>
       <section>
         <h4>{title}</h4>
         <p>{desc}</p>
@@ -25,14 +28,15 @@ const ProjectCard = ({ title, desc, tech, image, link = '#contact' }) => {
           <div className="pc-tag">
             {tech.split(', ')[0]}
           </div>
-          <button 
+          <AiButton 
             onClick={handleClick}
+            variant="ghost"
             className="pc-link-btn"
             aria-label={`View ${title} project`}
+            icon={<ExternalLink size={13} className="link-icon" />}
           >
-            {link && link !== '#contact' ? 'View Project' : 'Contact Us'} 
-            <ExternalLink size={13} className="link-icon" />
-          </button>
+            {link && link !== '#contact' ? 'View Project' : 'Contact Us'}
+          </AiButton>
         </div>
       </section>
     </div>

@@ -1,14 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const Reveal = ({ children, delay = 0, duration = 0.85, yOffset = 12, className = '' }) => {
+const Reveal = ({ children, delay = 0, duration = 0.85, yOffset = 35, scaleOffset = 0.94, className = '', style = {} }) => {
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: yOffset }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ 
+      style={style}
+      initial={{ opacity: 0, y: yOffset, scale: scaleOffset, filter: 'blur(8px)' }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+      viewport={{ once: false, amount: 0.12 }}
+      transition={{
         duration: duration,
         delay: delay,
         ease: [0.16, 1, 0.3, 1]

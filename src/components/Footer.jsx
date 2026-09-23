@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Send, Heart } from 'lucide-react';
+import { Send } from 'lucide-react';
 import Reveal from '../animations/Reveal';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo.webp';
+import AiButton from './ui/ai-button';
 
 // Brand SVGs to replace missing exports in lucide-react 1.23.0
 // const Github = ({ size = 18, ...props }) => (
@@ -125,26 +126,15 @@ const Footer = () => {
                   }}
                   className="newsletter-input"
                 />
-                <button
+                <AiButton
                   type="submit"
                   aria-label="Subscribe"
-                  style={{
-                    width: '42px',
-                    height: '42px',
-                    borderRadius: '50%',
-                    background: 'var(--text-primary)',
-                    color: 'var(--bg-primary)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    border: 'none',
-                    transition: 'transform 0.3s ease, background-color 0.3s ease'
-                  }}
+                  variant="primary"
                   className="newsletter-submit-btn"
+                  style={{ width: '42px', height: '42px', padding: 0, borderRadius: '50%' }}
+                  icon={<Send size={16} />}
                 >
-                  <Send size={16} />
-                </button>
+                </AiButton>
               </form>
               {subscribed && (
                 <p style={{ fontSize: '0.8rem', color: 'var(--accent-cyan)', marginTop: '0.5rem' }}>

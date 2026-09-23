@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Sun, Moon } from 'lucide-react';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo.webp';
+import AiButton from './ui/ai-button';
 
-const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
+const Navbar = ({ theme, toggleTheme, onLetsTalkClick, isReady = true }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('home');
@@ -71,7 +73,12 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
 
   return (
     <>
-      <nav className={`navbar-container ${scrolled ? 'scrolled' : ''}`}>
+      <motion.nav
+        className={`navbar-container ${scrolled ? 'scrolled' : ''}`}
+        initial={{ y: -40, opacity: 0, scale: 0.96 }}
+        animate={isReady ? { y: 0, opacity: 1, scale: 1 } : { y: -40, opacity: 0, scale: 0.96 }}
+        transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+      >
         <div className="navbar">
           {/* Brand/Logo */}
           <a href="#home" className="navbar-brand" onClick={(e) => { e.preventDefault(); handleLinkClick('home'); }}>
@@ -175,9 +182,9 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
               </button>
             </li>
             <li className="nav-item">
-              <button className="cta-button" onClick={(e) => { e.preventDefault(); onLetsTalkClick(); }} style={{ border: 'none', cursor: 'pointer' }}>
+              <AiButton variant="primary" onClick={(e) => { e.preventDefault(); onLetsTalkClick(); }}>
                 Let's Talk
-              </button>
+              </AiButton>
             </li>
           </ul>
 
@@ -204,7 +211,7 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
             </button>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Mobile Menu Overlay */}
       <div
@@ -311,9 +318,9 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick }) => {
         </ul>
 
         <div className="mobile-cta">
-          <button className="mobile-cta-button" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onLetsTalkClick(); }} style={{ border: 'none', cursor: 'pointer', display: 'block', width: '100%' }}>
+          <AiButton variant="primary" className="btn-full" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onLetsTalkClick(); }}>
             Let's Talk
-          </button>
+          </AiButton>
         </div>
       </div>
     </>

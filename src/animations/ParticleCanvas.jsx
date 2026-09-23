@@ -33,12 +33,12 @@ const ParticleCanvas = ({ theme }) => {
         this.speedY = (Math.random() - 0.5) * 0.35;
         this.opacity = Math.random() * 0.3 + 0.15;
         
-        // Colors adapt to dark/light theme
+        // Colors adapt to dark/light theme (Electric Purple & Violet accents)
         const isDark = theme === 'dark';
         if (isDark) {
-          this.color = Math.random() > 0.5 ? '99, 102, 241' : '6, 182, 212'; // Indigo / Cyan
+          this.color = Math.random() > 0.5 ? '168, 85, 247' : '216, 180, 254'; // Violet / Light Purple
         } else {
-          this.color = Math.random() > 0.5 ? '79, 70, 229' : '8, 145, 178'; // Darker Indigo / Cyan
+          this.color = Math.random() > 0.5 ? '147, 51, 234' : '192, 132, 252'; // Royal Purple / Bright Violet
         }
       }
 
@@ -71,7 +71,7 @@ const ParticleCanvas = ({ theme }) => {
 
     const connectParticles = () => {
       const isDark = theme === 'dark';
-      const lineColor = isDark ? '99, 102, 241' : '79, 70, 229';
+      const lineColor = isDark ? '168, 85, 247' : '147, 51, 234';
       
       for (let a = 0; a < particles.length; a++) {
         for (let b = a + 1; b < particles.length; b++) {
@@ -81,7 +81,7 @@ const ParticleCanvas = ({ theme }) => {
 
           if (dist < 110) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(${lineColor}, ${0.06 * (1 - dist / 110)})`;
+            ctx.strokeStyle = `rgba(${lineColor}, ${0.07 * (1 - dist / 110)})`;
             ctx.lineWidth = 0.5;
             ctx.moveTo(particles[a].x, particles[a].y);
             ctx.lineTo(particles[b].x, particles[b].y);

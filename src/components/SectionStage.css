@@ -1,0 +1,339 @@
+/* SectionStage 3D Parallax Container Styles */
+
+.section-stage-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+/* Dynamic Ambient Glow Behind Stage */
+.stage-ambient-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  border-radius: 50%;
+  filter: blur(60px);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* Fixed-Aspect Glass Stage Frame */
+.stage-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: var(--glass-shadow);
+  z-index: 1;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease;
+}
+
+.stage-container:hover {
+  border-color: var(--glass-border-hover);
+  background-color: var(--glass-bg-hover);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+/* Borderless Fluid Responsive 3D Stage Box */
+.stage-container.borderless {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  width: 100% !important;
+  height: clamp(320px, 45vh, 520px) !important;
+  min-height: 320px !important;
+  aspect-ratio: 1 / 1;
+  overflow: visible !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.stage-container.borderless .spline-canvas-box {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.stage-container.borderless .stage-watermark-cover {
+  display: none !important;
+}
+
+/* Glass Surface Reflection Highlight */
+.stage-glass-reflection {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.07) 0%,
+    transparent 45%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Spline Canvas Box Wrapper */
+.spline-canvas-box {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  transition: opacity 0.5s ease;
+  display: block !important;
+  visibility: visible !important;
+}
+
+.spline-canvas-box iframe {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 480px !important;
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  pointer-events: auto !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.spline-canvas-box.is-loading {
+  opacity: 0;
+}
+
+.spline-canvas-box.is-ready {
+  opacity: 1 !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* Skeleton Loading Placeholder */
+.stage-skeleton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.skeleton-pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 100%
+  );
+  animation: shimmer 1.8s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 1;
+  color: var(--text-secondary);
+}
+
+.skeleton-icon {
+  animation: pulse-icon 2s infinite ease-in-out;
+}
+
+@keyframes pulse-icon {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+.skeleton-text {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Interactive Fallback 3D Visualizer */
+.fallback-3d-stage {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.fallback-svg {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Animations for Fallback Geometry */
+.spin-clockwise {
+  transform-origin: 250px 250px;
+  animation: spinClockwise 25s linear infinite;
+}
+
+.spin-counter {
+  transform-origin: 250px 250px;
+  animation: spinCounter 20s linear infinite;
+}
+
+.spin-clockwise-fast {
+  transform-origin: 250px 250px;
+  animation: spinClockwise 12s linear infinite;
+}
+
+.spin-counter-fast {
+  transform-origin: 250px 250px;
+  animation: spinCounter 10s linear infinite;
+}
+
+.spin-slow {
+  transform-origin: 250px 250px;
+  animation: spinClockwise 40s linear infinite;
+}
+
+.pulse-float {
+  transform-origin: 250px 250px;
+  animation: floatY 6s ease-in-out infinite;
+}
+
+.pulse-slow {
+  transform-origin: 250px 250px;
+  animation: pulseSlow 4s ease-in-out infinite;
+}
+
+@keyframes spinClockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinCounter {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes pulseSlow {
+  0%, 100% { transform: scale(0.96); opacity: 0.6; }
+  50% { transform: scale(1.04); opacity: 1; }
+}
+
+/* Responsive Mobile Layouts */
+@media (max-width: 992px) {
+  .section-stage-wrapper {
+    max-width: 100%;
+    margin-bottom: 2.5rem;
+  }
+
+  .stage-container {
+    aspect-ratio: auto;
+    height: 380px;
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .stage-container {
+    height: 300px;
+  }
+}
+
+/* Stage Full-Width Watermark Cover Bar across bottom */
+.stage-watermark-cover {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 65px;
+  background-color: var(--bg-primary);
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* Strictly Hide Built With Spline Watermark Logo across stages */
+.stage-container #spline-logo,
+.stage-container a[href*="spline.design"],
+.stage-container .spline-watermark,
+.stage-container canvas + a,
+.stage-container div[style*="spline.design"],
+.stage-container img[src*="spline"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  clip-path: inset(100%) !important;
+}
+
+/* Iframe Watermark Shield Overlay to block click navigation to spline.design */
+.spline-iframe-watermark-shield {
+  position: absolute !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  width: 175px !important;
+  height: 55px !important;
+  background-color: #f3f4f6 !important;
+  border-radius: 0 0 24px 0 !important;
+  z-index: 100 !important;
+  pointer-events: auto !important;
+  cursor: default !important;
+  user-select: none !important;
+  box-shadow: none !important;
+  transition: background-color 0.4s ease;
+}
+
