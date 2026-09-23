@@ -9,11 +9,13 @@
   border-radius: 2rem;
   padding: 0.5rem;
   width: 20rem;
-  height: 30rem;
+  height: 28.5rem;
   overflow: clip;
   position: relative;
   font-family: var(--font-body);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  transform: translateZ(0);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background-color 0.3s ease;
+  will-change: transform;
 }
 
 [data-theme='light'] .portfolio-card {
@@ -24,34 +26,81 @@
   --button-color-hover: #e2e8f0;
 }
 
+/* Hardware accelerated card shadow on hover */
+.portfolio-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 2rem;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.38);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.portfolio-card:hover::after {
+  opacity: 1;
+}
+
 /* Glass gradient mask overlay */
 .portfolio-card::before {
   content: "";
   position: absolute;
   width: calc(100% - 1rem);
-  height: 30%;
+  height: 35%;
   bottom: 0.5rem;
   left: 0.5rem;
-  mask: linear-gradient(#0000, #000f 80%);
+  mask-image: linear-gradient(#0000, #000f 80%);
   -webkit-mask-image: linear-gradient(#0000, #000f 80%);
-  backdrop-filter: blur(1rem);
-  -webkit-backdrop-filter: blur(1rem);
+  background: var(--glass-bg);
   border-radius: 0 0 1.5rem 1.5rem;
   transform: translateY(0);
-  transition: transform 0.25s;
+  transition: opacity 0.3s ease;
   z-index: 2;
   pointer-events: none;
 }
 
+.portfolio-card:hover::before {
+  opacity: 0;
+}
+
+.pc-img-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: rgba(12, 8, 24, 0.4);
+}
+
+.portfolio-card-img,
 .portfolio-card > img {
-  max-width: 100%;
-  height: 20rem;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: 50% 5%;
   border-radius: 1.5rem;
   display: block;
-  transition: height 0.3s cubic-bezier(0.16, 1, 0.3, 1), object-position 0.5s ease;
+  transform: scale(1) translateZ(0);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.pc-img-container.fit-contain {
+  padding: 1.5rem 1.5rem 5.5rem 1.5rem;
+  align-items: center;
+  background: rgba(15, 10, 32, 0.7);
+}
+
+.pc-img-container.fit-contain .portfolio-card-img {
+  object-fit: contain;
   width: 100%;
+  height: 100%;
+  max-height: 15rem;
 }
 
 .portfolio-card > section {
@@ -59,40 +108,47 @@
   bottom: 0.5rem;
   left: 0.5rem;
   right: 0.5rem;
-  background: var(--bg);
-  border-radius: 0 0 1.5rem 1.5rem;
+  background: rgba(10, 5, 21, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 1.5rem;
   padding: 1.25rem;
-  height: 9rem;
+  height: 14.5rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  transition: height 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+  transform: translateY(calc(14.5rem - 4.25rem)) translateZ(0);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
   z-index: 3;
   overflow: hidden;
+  will-change: transform;
 }
 
 .portfolio-card h4 {
   margin: 0;
   margin-bottom: 0.5rem;
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-family: var(--font-display);
   color: var(--title-color-hover);
   transition: color 0.3s ease;
   flex-shrink: 0;
+  line-height: 1.3;
 }
 
 .portfolio-card p {
-  font-size: 0.9rem;
-  line-height: 1.4;
+  font-size: 0.875rem;
+  line-height: 1.5;
   color: var(--text-color);
   opacity: 0;
   margin: 0;
-  transform: translateY(15px);
-  transition: opacity 0.3s ease 0.05s, transform 0.3s ease 0.05s;
+  transform: translateY(8px) translateZ(0);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
   display: -webkit-box;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  will-change: transform, opacity;
 }
 
 .portfolio-card .pc-card-row {
@@ -101,32 +157,33 @@
   justify-content: space-between;
   align-items: center;
   opacity: 0;
-  transform: translateY(15px);
-  transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+  transform: translateY(8px) translateZ(0);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   padding-top: 0.5rem;
   flex-shrink: 0;
+  will-change: transform, opacity;
 }
 
 .portfolio-card .pc-tag {
   align-self: center;
-  font-size: 0.85rem;
+  font-size: 0.825rem;
   font-weight: 600;
   color: var(--accent-cyan);
 }
 
 .portfolio-card .pc-link-btn {
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 1.25rem 1.25rem 1.5rem 1.25rem;
-  font-size: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.25rem;
+  font-size: 0.825rem;
   font-family: var(--font-display);
   font-weight: 600;
-  padding: 0.55rem 1.1rem;
+  padding: 0.5rem 1rem;
   background: var(--button-color);
   transition: background 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
   color: var(--title-color-hover);
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   cursor: pointer;
   text-decoration: none;
 }
@@ -144,39 +201,34 @@
   transform: translate(2px, -2px);
 }
 
-/* Hover States */
+/* Hover States - Pure GPU Hardware Accelerated (0 Reflows) */
 .portfolio-card:hover,
 .portfolio-card:focus-within {
-  transform: translateY(-6px);
+  transform: translateY(-6px) translateZ(0);
   border-color: var(--glass-border-hover);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
-.portfolio-card:hover::before,
-.portfolio-card:focus-within::before {
-  transform: translateY(100%);
-}
-
+.portfolio-card:hover .portfolio-card-img,
+.portfolio-card:focus-within .portfolio-card-img,
 .portfolio-card:hover > img,
 .portfolio-card:focus-within > img {
-  height: 14.5rem;
-  object-position: 50% 10%;
+  transform: scale(1.05) translateZ(0);
 }
 
 .portfolio-card:hover > section,
 .portfolio-card:focus-within > section {
-  height: 14.5rem;
+  transform: translateY(0) translateZ(0);
 }
 
 .portfolio-card:hover > section p,
 .portfolio-card:focus-within > section p {
-  transform: translateY(0);
+  transform: translateY(0) translateZ(0);
   opacity: 1;
 }
 
 .portfolio-card:hover > section .pc-card-row,
 .portfolio-card:focus-within > section .pc-card-row {
-  transform: translateY(0);
+  transform: translateY(0) translateZ(0);
   opacity: 1;
 }
 
@@ -199,6 +251,7 @@
   .portfolio-card > section {
     position: relative;
     height: auto !important;
+    transform: translateY(0) !important;
     bottom: 0;
     left: 0;
     right: 0;

@@ -1,160 +1,172 @@
-import React from 'react';
-import { MessageSquare, FileText, Code, TestTube, Rocket, HeartHandshake } from 'lucide-react';
+import React, { useRef } from 'react';
+import { MessageSquare, Code, TestTube, Rocket, HeartHandshake, CheckCircle2 } from 'lucide-react';
 import Reveal from '../animations/Reveal';
+import { ExpandableBentoGrid } from './ui/expandable-bento-grid';
 
 const HowWeWork = () => {
-  const timeline = [
+  const sectionRef = useRef(null);
+
+  const processItems = [
     {
-      phase: "Week 1",
-      title: "Discovery & Planning",
-      icon: <MessageSquare size={24} />,
-      tasks: [
-        "Requirements gathering & analysis",
-        "Technical architecture design",
-        "Project timeline & milestones",
-        "Technology stack finalization"
-      ],
-      color: "rgba(99, 102, 241, 0.1)"
+      id: 1,
+      subtitle: "Phase 01",
+      title: "Discovery & Architecture",
+      description: "Defining scope, technical specifications, and project roadmap.",
+      icon: <MessageSquare className="w-6 h-6" />,
+      content: (
+        <div className="flex flex-col gap-4">
+          <p className="text-base text-slate-300 leading-relaxed">
+            We start by immersing ourselves in your domain, business goals, and user requirements. This phase produces a comprehensive architectural blueprint.
+          </p>
+          <ul className="flex flex-col gap-3.5 mt-3">
+            <li className="flex items-start sm:items-center gap-3.5 text-sm sm:text-base text-slate-300">
+              <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0" />
+              <span>In-depth requirements analysis & scoping workshops</span>
+            </li>
+            <li className="flex items-start sm:items-center gap-3 text-sm sm:text-base text-slate-300">
+              <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0" />
+              <span>Scalable system architecture & database schema design</span>
+            </li>
+            <li className="flex items-start sm:items-center gap-3 text-sm sm:text-base text-slate-300">
+              <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0" />
+              <span>Clear milestones, delivery timeline & tech stack selection</span>
+            </li>
+          </ul>
+        </div>
+      )
     },
     {
-      phase: "Week 2-X",
-      title: "Development Sprint",
-      icon: <Code size={24} />,
-      tasks: [
-        "Agile development cycles",
-        "Weekly progress demos",
-        "GitHub repository access",
-        "Regular communication & updates"
-      ],
-      color: "rgba(6, 182, 212, 0.1)"
+      id: 2,
+      subtitle: "Phase 02",
+      title: "Agile Development Sprint",
+      description: "Iterative building with continuous feedback and staging previews.",
+      icon: <Code className="w-6 h-6" />,
+      content: (
+        <div className="flex flex-col gap-4">
+          <p className="text-base text-slate-300 leading-relaxed">
+            Our core engineering phase follows modern agile methodologies to build clean, maintainable code with high velocity and total transparency.
+          </p>
+          <ul className="flex flex-col gap-3.5 mt-3">
+            <li className="flex items-start sm:items-center gap-3.5 text-sm sm:text-base text-slate-300">
+              <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0" />
+              <span>Iterative bi-weekly build cycles with clear deliverables</span>
+            </li>
+            <li className="flex items-start sm:items-center gap-3 text-sm sm:text-base text-slate-300">
+              <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0" />
+              <span>Live demo staging environments for continuous review</span>
+            </li>
+            <li className="flex items-start sm:items-center gap-3 text-sm sm:text-base text-slate-300">
+              <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0" />
+              <span>Clean, well-documented code repository with CI integration</span>
+            </li>
+          </ul>
+        </div>
+      )
     },
     {
-      phase: "Testing Phase",
-      title: "Quality Assurance",
-      icon: <TestTube size={24} />,
-      tasks: [
-        "Comprehensive testing & QA",
-        "Bug fixes & optimization",
-        "Performance tuning",
-        "Security audit"
-      ],
-      color: "rgba(251, 191, 36, 0.1)"
+      id: 3,
+      subtitle: "Phase 03",
+      title: "Quality & Security Audit",
+      description: "Thorough testing, optimization, and security vulnerability checks.",
+      icon: <TestTube className="w-6 h-6" />,
+      content: (
+        <div className="flex flex-col gap-4">
+          <p className="text-base text-slate-300 leading-relaxed">
+            Before reaching production, every line of code undergo rigorous testing across performance, security, and user experience standards.
+          </p>
+          <ul className="flex flex-col gap-3.5 mt-3">
+            <li className="flex items-start sm:items-center gap-3.5 text-sm sm:text-base text-slate-300">
+              <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0" />
+              <span>End-to-end user flow & automated unit testing</span>
+            </li>
+            <li className="flex items-start sm:items-center gap-3 text-sm sm:text-base text-slate-300">
+              <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0" />
+              <span>Performance optimization & Core Web Vitals audit</span>
+            </li>
+            <li className="flex items-start sm:items-center gap-3 text-sm sm:text-base text-slate-300">
+              <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0" />
+              <span>Security, authentication & payload vulnerability checks</span>
+            </li>
+          </ul>
+        </div>
+      )
     },
     {
-      phase: "Final Week",
-      title: "Launch & Delivery",
-      icon: <Rocket size={24} />,
-      tasks: [
-        "Production deployment",
-        "Complete documentation",
-        "Training & handover",
-        "Post-launch monitoring"
-      ],
-      color: "rgba(16, 185, 129, 0.1)"
+      id: 4,
+      subtitle: "Phase 04",
+      title: "Production Deployment",
+      icon: <Rocket className="w-6 h-6" />,
+      description: "Automated pipelines, SSL setup, domain routing & code handover.",
+      content: (
+        <div className="flex flex-col gap-4">
+          <p className="text-base text-slate-300 leading-relaxed">
+            Seamless transition to production servers with zero downtime deployment strategies and complete technical documentation handover.
+          </p>
+          <ul className="flex flex-col gap-3.5 mt-3">
+            <li className="flex items-start sm:items-center gap-3.5 text-sm sm:text-base text-slate-300">
+              <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0" />
+              <span>Automated CI/CD deployment pipeline configuration</span>
+            </li>
+            <li className="flex items-start sm:items-center gap-3 text-sm sm:text-base text-slate-300">
+              <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0" />
+              <span>Custom domain, DNS & SSL security certificate setup</span>
+            </li>
+            <li className="flex items-start sm:items-center gap-3 text-sm sm:text-base text-slate-300">
+              <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0" />
+              <span>Comprehensive code handover & operations documentation</span>
+            </li>
+          </ul>
+        </div>
+      )
     },
     {
-      phase: "Ongoing",
-      title: "Support & Maintenance",
-      icon: <HeartHandshake size={24} />,
-      tasks: [
-        "Free bug fixes period",
-        "Technical support",
-        "Feature enhancements (paid)",
-        "Long-term partnership"
-      ],
-      color: "rgba(139, 92, 246, 0.1)"
+      id: 5,
+      subtitle: "Phase 05",
+      title: "Growth & SLA Support",
+      icon: <HeartHandshake className="w-6 h-6" />,
+      description: "Post-launch maintenance, scalability monitoring, and feature iteration.",
+      content: (
+        <div className="flex flex-col gap-4">
+          <p className="text-base text-slate-300 leading-relaxed">
+            We stand by our work long after launch, ensuring your application remains fast, secure, and continuously evolving with your user base.
+          </p>
+          <ul className="flex flex-col gap-3.5 mt-3">
+            <li className="flex items-start sm:items-center gap-3.5 text-sm sm:text-base text-slate-300">
+              <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0" />
+              <span>Dedicated post-launch bug fix guarantee</span>
+            </li>
+            <li className="flex items-start sm:items-center gap-3 text-sm sm:text-base text-slate-300">
+              <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0" />
+              <span>24/7 performance monitoring & traffic scale tuning</span>
+            </li>
+            <li className="flex items-start sm:items-center gap-3 text-sm sm:text-base text-slate-300">
+              <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0" />
+              <span>Long-term strategic enhancements & feature roadmap</span>
+            </li>
+          </ul>
+        </div>
+      )
     }
   ];
 
   return (
-    <section className="how-we-work" id="process" style={{ background: 'var(--bg-secondary)' }}>
-      <div className="container">
+    <section className="how-we-work py-20 px-4" id="process" ref={sectionRef} style={{ background: 'var(--bg-secondary)' }}>
+      <div className="container max-w-6xl mx-auto">
         <Reveal>
-          <div className="section-header" style={{ textAlign: 'center', margin: '0 auto 4rem', maxWidth: '700px' }}>
-            <div className="section-tag">Our Process</div>
-            <h2>How we <span className="gradient-text">approach projects</span></h2>
-            <p>A transparent, collaborative workflow from discovery to deployment. You're involved at every step.</p>
-          </div>
-        </Reveal>
-
-        <div className="timeline-container">
-          {timeline.map((step, idx) => (
-            <Reveal key={idx} delay={idx * 0.1} yOffset={30}>
-              <div className="timeline-step">
-                <div className="timeline-connector" style={{ 
-                  display: idx === timeline.length - 1 ? 'none' : 'block' 
-                }} />
-                
-                <div className="timeline-content">
-                  <div className="timeline-icon" style={{ background: step.color }}>
-                    {step.icon}
-                  </div>
-                  
-                  <div className="timeline-card">
-                    <div className="timeline-header">
-                      <span className="timeline-phase">{step.phase}</span>
-                      <h3>{step.title}</h3>
-                    </div>
-                    
-                    <ul className="timeline-tasks">
-                      {step.tasks.map((task, taskIdx) => (
-                        <li key={taskIdx}>
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="7" stroke="var(--accent-cyan)" strokeWidth="2" opacity="0.3"/>
-                            <circle cx="8" cy="8" r="3" fill="var(--accent-cyan)"/>
-                          </svg>
-                          <span>{task}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-
-        <Reveal delay={0.6}>
-          <div className="process-cta" style={{ 
-            textAlign: 'center', 
-            marginTop: '5rem',
-            padding: '3rem 2rem',
-            background: 'var(--glass-bg)',
-            backdropFilter: 'blur(14px)',
-            WebkitBackdropFilter: 'blur(14px)',
-            border: '1px solid var(--glass-border)',
-            borderRadius: '16px',
-            boxShadow: 'var(--glass-shadow)'
-          }}>
-            <h3 style={{ 
-              fontSize: '1.8rem', 
-              marginBottom: '1rem',
-              fontFamily: 'var(--font-display)',
-              color: 'var(--text-primary)'
-            }}>
-              Ready to start your project?
-            </h3>
-            <p style={{ 
-              fontSize: '1.1rem', 
-              color: 'var(--text-secondary)', 
-              marginBottom: '2rem',
-              maxWidth: '600px',
-              margin: '0 auto 2rem'
-            }}>
-              Let's discuss your requirements and create a custom timeline for your needs.
+          <div className="section-header text-center mb-14">
+            <div className="section-tag inline-block px-3 py-1 text-xs font-semibold rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-3 uppercase tracking-wider">
+              Our Process
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
+              How we <span className="gradient-text">approach projects</span>
+            </h2>
+            <p className="text-slate-400 max-w-2xl mx-auto text-base sm:text-lg">
+              A transparent, collaborative workflow from discovery to deployment. You're involved at every step.
             </p>
-            <button 
-              onClick={() => {
-                const contactSection = document.getElementById('contact');
-                if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="btn btn-primary"
-              style={{ fontSize: '1rem', padding: '1rem 2.5rem' }}
-            >
-              Schedule Free Consultation
-            </button>
           </div>
         </Reveal>
+
+        <ExpandableBentoGrid items={processItems} />
       </div>
     </section>
   );
