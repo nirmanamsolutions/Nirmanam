@@ -24,10 +24,10 @@ function Key({ size = "", accent = "" }) {
 // ─── Keycode → DOM index map ────────────────────────────────────────────────
 
 const KC_MAP = {
-  81:15, 87:16, 69:17, 82:18, 84:19, 89:20, 85:21, 73:22, 79:23, 80:24,
-  65:29, 83:30, 68:31, 70:32, 71:33, 72:34, 74:35, 75:36, 76:37,
-  90:41, 88:42, 67:43, 86:44, 66:45, 78:46, 77:47,
-  32:56, 13:39, 8:27,
+  81: 15, 87: 16, 69: 17, 82: 18, 84: 19, 89: 20, 85: 21, 73: 22, 79: 23, 80: 24,
+  65: 29, 83: 30, 68: 31, 70: 32, 71: 33, 72: 34, 74: 35, 75: 36, 76: 37,
+  90: 41, 88: 42, 67: 43, 86: 44, 66: 45, 78: 46, 77: 47,
+  32: 56, 13: 39, 8: 27,
 };
 
 // ─── Main Component ─────────────────────────────────────────────────────────
@@ -142,6 +142,7 @@ export function TypingKeyboard({
     window.addEventListener('resize', handleResize, { passive: true });
     return () => window.removeEventListener('resize', handleResize);
   }, [scale]);
+  //ADD
 
   return (
     <div ref={mainRef} className={cn("tk-container", className)} {...props}>
