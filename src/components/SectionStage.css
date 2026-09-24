@@ -320,14 +320,13 @@
   clip-path: inset(100%) !important;
 }
 
-/* Iframe Watermark Shield Overlay to block click navigation to spline.design */
 .spline-iframe-watermark-shield {
   position: absolute !important;
   bottom: 0 !important;
   right: 0 !important;
   width: 175px !important;
   height: 55px !important;
-  background-color: #f3f4f6 !important;
+  background-color: var(--bg-primary) !important;
   border-radius: 0 0 24px 0 !important;
   z-index: 100 !important;
   pointer-events: auto !important;

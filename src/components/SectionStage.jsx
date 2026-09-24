@@ -1,15 +1,6 @@
-import React, { useState, useEffect, useRef, Suspense, lazy, Component } from 'react';
+import React, { useState, useEffect, useRef, Component } from 'react';
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
 import './SectionStage.css';
-
-// Lazy load @splinetool/react-spline to isolate WebGL bundle and optimize page boot speed
-const Spline = lazy(() =>
-  import('@splinetool/react-spline').catch((err) => {
-    console.warn('Spline component failed to load, switching to interactive fallback stage:', err);
-    return { default: () => null };
-  })
-);
 
 /**
  * React Error Boundary around Spline WebGL Canvas
@@ -57,7 +48,7 @@ const NativeSplineCanvas = ({ sceneUrl, sectionName, onLoad, onError }) => {
         const { Application } = await import('@splinetool/runtime');
         if (!isMounted || !canvasRef.current) return;
 
-        appInstance = new Application(canvasRef.current, { htmlContentMode: 'inline' });
+        appInstance = new Application(canvasRef.current);
         await appInstance.load(sceneUrl);
 
         if (isMounted) {
@@ -72,8 +63,25 @@ const NativeSplineCanvas = ({ sceneUrl, sectionName, onLoad, onError }) => {
           }
         };
 
-        window.addEventListener('resize', handleResize);
-        window.addEventListener('orientationchange', handleResize);
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (appInstance) {
+              if (entry.isIntersecting) {
+                if (typeof appInstance.play === 'function') appInstance.play();
+              } else {
+                if (typeof appInstance.stop === 'function') appInstance.stop();
+              }
+            }
+          },
+          { threshold: 0.05 }
+        );
+
+        if (canvasRef.current) {
+          observer.observe(canvasRef.current);
+        }
+
+        window.addEventListener('resize', handleResize, { passive: true });
+        window.addEventListener('orientationchange', handleResize, { passive: true });
       } catch (err) {
         console.warn(`NativeSplineCanvas load issue for ${sectionName}:`, err);
         if (isMounted) {
@@ -88,8 +96,6 @@ const NativeSplineCanvas = ({ sceneUrl, sectionName, onLoad, onError }) => {
     return () => {
       isMounted = false;
       try {
-        window.removeEventListener('resize', handleResize);
-        window.removeEventListener('orientationchange', handleResize);
         if (appInstance && typeof appInstance.stop === 'function') {
           appInstance.stop();
         }
@@ -119,10 +125,9 @@ const NativeSplineCanvas = ({ sceneUrl, sectionName, onLoad, onError }) => {
 /**
  * SectionStage Component
  * Reusable 3D Stage box that manages:
- * - IntersectionObserver viewport mounting (only 1-2 active 3D canvases at a time)
- * - Suspense & skeleton loading states
- * - Framer Motion scroll-linked parallax, rotation, and scale transforms
- * - High-end interactive SVG 3D Fallback Visualizer if sceneUrl is offline/loading/error
+ * - IntersectionObserver viewport mounting
+ * - Framer Motion scroll-linked parallax
+ * - Interactive SVG 3D Fallback Visualizer
  */
 import { useActiveSceneManager } from '../hooks/useActiveSceneManager';
 
@@ -136,19 +141,23 @@ const SectionStage = ({
   onSplineLoad = null,
   className = '',
   borderless = false,
-  fallbackType = 'default', // 'hero' | 'about' | 'services' | 'portfolio' | 'process' | 'contact'
+  fallbackType = 'default',
 }) => {
   const containerRef = useRef(null);
   const [isInViewport, setIsInViewport] = useState(false);
   const { shouldRender } = useActiveSceneManager(sectionName, isInViewport);
-  const [stageKey, setStageKey] = useState(0);
-  const [isLoading, setIsLoading] = useState(Boolean(sceneUrl));
-  const [hasError, setHasError] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const splineAppRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
 
-  // Tight Viewport Observer (200px margin for zero-lag pre-mount)
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', checkMobile, { passive: true });
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Tight Viewport Observer
   useEffect(() => {
     const target = containerRef.current;
     if (!target) return;
@@ -157,7 +166,7 @@ const SectionStage = ({
       ([entry]) => {
         setIsInViewport(entry.isIntersecting);
       },
-      { rootMargin: '200px 0px 200px 0px', threshold: 0.01 }
+      { rootMargin: '150px 0px 150px 0px', threshold: 0.01 }
     );
 
     observer.observe(target);
@@ -170,18 +179,15 @@ const SectionStage = ({
     offset: ['start end', 'end start']
   });
 
-  // Smooth springs for buttery scroll motion
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 20 });
 
-  // Parallax offsets (middle speed: 20px - 40px drift, slight scale 0.94 -> 1.02, rotation 4deg)
   const translateY = useTransform(smoothProgress, [0, 0.5, 1], [30, 0, -30]);
   const rotateX = useTransform(smoothProgress, [0, 0.5, 1], [6, 0, -6]);
   const rotateY = useTransform(smoothProgress, [0, 0.5, 1], [-8, 0, 8]);
   const scale = useTransform(smoothProgress, [0, 0.5, 1], [0.94, 1.0, 0.96]);
 
-  // Subtle Mouse Parallax / Tilt
   const handleMouseMove = (e) => {
-    if (shouldReduceMotion) return;
+    if (shouldReduceMotion || isMobile) return;
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
     const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
@@ -193,10 +199,8 @@ const SectionStage = ({
     setMousePos({ x: 0, y: 0 });
   };
 
-  // Spline load handler
   const handleSplineLoad = (splineApp) => {
     splineAppRef.current = splineApp;
-    setIsLoading(false);
     window.dispatchEvent(new CustomEvent('spline-model-ready', { detail: { id: sectionName } }));
     if (onSplineLoad) {
       onSplineLoad(splineApp);
@@ -205,24 +209,19 @@ const SectionStage = ({
 
   const handleSplineError = (err) => {
     console.warn(`Spline scene load issue for ${sectionName}:`, err);
-    setHasError(true);
-    setIsLoading(false);
     window.dispatchEvent(new CustomEvent('spline-model-ready', { detail: { id: sectionName } }));
   };
 
-  // Check if sceneUrl is a valid non-empty string
-  const isValidSplineUrl = typeof sceneUrl === 'string' && sceneUrl.trim().length > 0 && sceneUrl.includes('spline.design');
+  const isValidSplineUrl = !isMobile && typeof sceneUrl === 'string' && sceneUrl.trim().length > 0 && sceneUrl.includes('spline.design');
   const isIframeEmbed = isValidSplineUrl && sceneUrl.includes('my.spline.design');
   const isSplineCodeUrl = isValidSplineUrl && sceneUrl.includes('.splinecode');
 
-  // Trigger ready dispatch for iframe embeds immediately on mount
   useEffect(() => {
     if (isIframeEmbed) {
-      setIsLoading(false);
-      setHasError(false);
       window.dispatchEvent(new CustomEvent('spline-model-ready', { detail: { id: sectionName } }));
     }
   }, [isIframeEmbed, sectionName]);
+
 
   const fallbackComponent = (
     <Fallback3dVisualizer

@@ -5,9 +5,9 @@ const Reveal = ({ children, delay = 0, duration = 0.85, yOffset = 35, scaleOffse
   return (
     <motion.div
       className={className}
-      style={style}
-      initial={{ opacity: 0, y: yOffset, scale: scaleOffset, filter: 'blur(8px)' }}
-      whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+      style={{ willChange: 'transform, opacity', transform: 'translateZ(0)', ...style }}
+      initial={{ opacity: 0, y: yOffset, scale: scaleOffset }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: false, amount: 0.12 }}
       transition={{
         duration: duration,

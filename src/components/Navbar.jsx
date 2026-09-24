@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Sun, Moon } from 'lucide-react';
 import logo from '../assets/logo.webp';
 import AiButton from './ui/ai-button';
 
-const Navbar = ({ theme, toggleTheme, onLetsTalkClick, isReady = true }) => {
+const Navbar = ({ onLetsTalkClick, isReady = true }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('home');
@@ -153,7 +152,7 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick, isReady = true }) => {
               >
                 <svg className="nav-icon" viewBox="0 0 24 24">
                   <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 16 14"></polyline>
+                  <polyline points="12 6 12 16 14"></polyline>
                 </svg>
                 <span>Process</span>
               </a>
@@ -171,16 +170,6 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick, isReady = true }) => {
                 <span>Contact</span>
               </a>
             </li>
-            <li style={{ display: 'flex', alignItems: 'center', marginLeft: '10px' }}>
-              <button
-                onClick={toggleTheme}
-                className="theme-toggle-btn desktop-only-theme"
-                aria-label="Toggle theme"
-                style={{ width: '34px', height: '34px', border: 'none', background: 'rgba(255,255,255,0.05)' }}
-              >
-                {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
-              </button>
-            </li>
             <li className="nav-item">
               <AiButton variant="primary" onClick={(e) => { e.preventDefault(); onLetsTalkClick(); }}>
                 Let's Talk
@@ -190,14 +179,6 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick, isReady = true }) => {
 
           {/* Mobile Toggle */}
           <div className="mobile-controls" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <button
-              onClick={toggleTheme}
-              className="theme-toggle-btn mobile-only-theme"
-              aria-label="Toggle theme"
-              style={{ width: '38px', height: '38px', border: 'none', background: 'rgba(255,255,255,0.05)' }}
-            >
-              {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
-            </button>
             <button
               className={`mobile-toggle ${mobileMenuOpen ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -212,6 +193,7 @@ const Navbar = ({ theme, toggleTheme, onLetsTalkClick, isReady = true }) => {
           </div>
         </div>
       </motion.nav>
+
 
       {/* Mobile Menu Overlay */}
       <div

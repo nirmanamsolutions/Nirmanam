@@ -55,8 +55,26 @@ export function TypingKeyboard({
 
     const allKeys = kb.querySelectorAll(".tk-key");
     let alive = true;
+    let isVisible = true;
     let idx = 0;
     let timer;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (!isVisible && timer) {
+          clearTimeout(timer);
+          timer = null;
+        } else if (isVisible && !timer && alive) {
+          typeNext();
+        }
+      },
+      { threshold: 0.05 }
+    );
+
+    if (mainRef.current) {
+      observer.observe(mainRef.current);
+    }
 
     const pressKey = (kc) => {
       const domIdx = KC_MAP[kc];
@@ -68,7 +86,14 @@ export function TypingKeyboard({
     };
 
     const typeNext = () => {
-      if (!alive || !screen) return;
+      if (!alive || !screen || !isVisible) return;
+
+      // Pause typing keypress DOM updates while user is actively scrolling page
+      if (typeof document !== 'undefined' && document.body.classList.contains('is-scrolling')) {
+        timer = setTimeout(typeNext, 250);
+        return;
+      }
+
       const char = autoTypeText[idx];
       const kc = char === " " ? 32 : char.toUpperCase().charCodeAt(0);
 
@@ -78,7 +103,7 @@ export function TypingKeyboard({
       idx++;
       if (idx >= autoTypeText.length) {
         timer = setTimeout(() => {
-          if (!alive) return;
+          if (!alive || !isVisible) return;
           screen.innerHTML = "";
           idx = 0;
           timer = setTimeout(typeNext, 1000);
@@ -90,24 +115,57 @@ export function TypingKeyboard({
     };
 
     timer = setTimeout(typeNext, 1500);
-    return () => { alive = false; clearTimeout(timer); };
+    return () => {
+      alive = false;
+      observer.disconnect();
+      if (timer) clearTimeout(timer);
+    };
   }, [autoTypeText, typingSpeed]);
 
+  const [responsiveScale, setResponsiveScale] = React.useState(scale);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (typeof window === 'undefined') return;
+      const w = window.innerWidth;
+      if (w < 380) {
+        setResponsiveScale(Math.min(scale, 0.35));
+      } else if (w < 480) {
+        setResponsiveScale(Math.min(scale, 0.42));
+      } else if (w < 768) {
+        setResponsiveScale(Math.min(scale, 0.52));
+      } else {
+        setResponsiveScale(scale);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, [scale]);
+
   return (
-    <div className={cn("tk-container", className)} {...props}>
+    <div ref={mainRef} className={cn("tk-container", className)} {...props}>
       <style>{`
-        .tk-container * { transform-style: preserve-3d; }
         .tk-container {
           width: 100%; height: 100%;
+          max-width: 100%;
+          overflow: hidden;
           display: flex; justify-content: center; align-items: center;
           font-family: sans-serif; font-weight: bolder;
           color: rgba(255,255,251,0.7);
           text-transform: uppercase; letter-spacing: 2px;
+          contain: layout paint;
+          transform: translateZ(0);
+        }
+        .tk-main, .tk-keyboard, .tk-key, .tk-face {
+          transform-style: preserve-3d;
+          backface-visibility: hidden;
         }
         .tk-main {
           width: 800px; height: 600px;
+          max-width: 100%;
           position: relative; cursor: pointer;
-          transform: scale(${scale});
+          transform: scale(${responsiveScale});
           transform-origin: center center;
         }
         .tk-flex { display: flex; justify-content: center; align-items: center; }
@@ -145,15 +203,7 @@ export function TypingKeyboard({
           text-transform: none; letter-spacing: 1px; color: #fff;
           align-items: flex-start !important;
           justify-content: flex-start !important;
-          box-shadow:
-            0 0 5px color-mix(in srgb, ${accentColor} 80%, transparent),
-            0 0 10px color-mix(in srgb, ${accentColor} 70%, transparent),
-            0 0 15px color-mix(in srgb, ${accentColor} 60%, transparent),
-            0 0 20px color-mix(in srgb, ${accentColor} 50%, transparent),
-            0 0 40px color-mix(in srgb, ${accentColor} 40%, transparent),
-            0 0 60px color-mix(in srgb, ${accentColor} 30%, transparent);
-          animation: tk-screen-flicker 1s ease-in alternate infinite;
-        }
+          box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
         @keyframes tk-screen-flicker {
           0%, 90%, 96% { background-color: ${accentColor}; }
           93%, 100%    { background-color: color-mix(in srgb, ${accentColor} 80%, black); }

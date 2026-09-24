@@ -6,13 +6,6 @@ import { useOutsideClick } from '@/hooks/use-outside-click'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-// Ultra-fast smooth spring transition config for 60fps expansion
-const transitionConfig = {
-    type: "spring",
-    stiffness: 400,
-    damping: 32,
-    mass: 0.6
-}
 
 /**
  * @typedef {Object} BentoItem
@@ -93,7 +86,7 @@ export function ExpandableBentoGrid({ items = [], className = '' }) {
                                 )}
                             </div>
 
-                            <div className="flex flex-col flex-1 overflow-y-auto px-8 sm:px-12 py-8 sm:py-10 gap-6 [scrollbar-width:thin] w-full box-border">
+                            <div className="flex flex-col flex-1 overflow-y-auto px-5 sm:px-12 py-5 sm:py-10 gap-6 [scrollbar-width:thin] w-full box-border">
                                 <div className="flex flex-col gap-3 text-left">
                                     {active.subtitle && (
                                         <motion.span

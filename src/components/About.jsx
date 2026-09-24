@@ -51,16 +51,9 @@ const About = () => {
   return (
     <section className="about" id="about" ref={sectionRef} style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
       <div className="container">
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, 0.85fr)',
-            gap: '2.5rem',
-            alignItems: 'center'
-          }}
-          className="about-grid-container"
-        >
+        <div className="about-grid-container">
           {/* Left Side: Content & 5 Feature Cards */}
+
           <motion.div style={{ x: textX, y: textY, opacity: textOpacity }}>
             <div className="section-tag" style={{ marginBottom: '0.4rem' }}>Our Philosophy</div>
             <h2 style={{ fontSize: '2.2rem', marginBottom: '0.75rem', lineHeight: '1.15' }}>
@@ -81,8 +74,6 @@ const About = () => {
                       gap: '0.75rem',
                       padding: '0.45rem 0.85rem',
                       backgroundColor: 'var(--glass-bg)',
-                      backdropFilter: 'blur(14px)',
-                      WebkitBackdropFilter: 'blur(14px)',
                       border: '1px solid var(--glass-border)',
                       borderRadius: '12px',
                       transition: 'all 0.3s ease'

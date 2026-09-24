@@ -1,0 +1,27 @@
+# robots.txt for Nirmanam Solutions
+User-agent: *
+Allow: /
+
+# AI Crawlers & LLM Scrapers Allowed
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://nirmanamsolutions.netlify.app/sitemap.xml

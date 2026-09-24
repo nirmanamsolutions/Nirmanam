@@ -1,0 +1,24 @@
+# Nirmanam Solutions
+
+> Nirmanam Solutions is a premier software engineering and product design studio headquartered in Pune, Maharashtra, India, serving global tech clients, Indian startups, and enterprise organizations worldwide.
+
+## Core Capabilities
+- Web Platforms: Server-rendered React/Next.js architectures, WebGL interactions, sub-second initial load speeds, and scalable frontends.
+- Mobile Application Engineering: Cross-platform iOS & Android mobile systems using React Native & Flutter, 60fps gesture rendering, offline-first sync, and hardware integrations.
+- Custom Systems & APIs: Resilient distributed Node.js/PostgreSQL/GraphQL backends, microservices, and event-driven architecture.
+- Cloud Infrastructure & DevOps: Automated GitHub Actions CI/CD pipelines, Docker containerization, Kubernetes, and AWS deployment.
+- UI/UX Design Systems: High-fidelity Figma component systems, interactive micro-animations, and conversion rate design audits.
+
+## Featured Portfolio Systems
+- Sravase Dairy Management System: Full-stack dairy platform for farmers and collection centers with real-time milk logging, automated FAT/SNF pricing calculations, and mobile Android app.
+- SkillSutra E-Learning Platform: Secure educational LMS with Stripe payment integration, HLS DRM video streaming protection, and progress tracking.
+
+## Contact Information
+- Website: https://nirmanamsolutions.netlify.app
+- Primary Email: nirmanamsolutions@gmail.com
+- Location: Pune, Maharashtra, India
+- Response SLA: Within 24 hours guaranteed
+
+
+## Technical Stack & Standards
+React 19, Vite, TailwindCSS v4, Framer Motion, Spline 3D WebGL, Node.js, Express, PostgreSQL, MongoDB, Docker, AWS.

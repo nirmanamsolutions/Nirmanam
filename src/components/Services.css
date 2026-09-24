@@ -43,10 +43,8 @@
   position: relative;
   width: 100%;
   border-radius: 24px;
-  background: rgba(15, 10, 30, 0.65);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(168, 85, 247, 0.15);
+  background: linear-gradient(135deg, rgba(16, 9, 36, 0.92) 0%, rgba(8, 4, 20, 0.96) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.22);
   padding: 2.25rem 2rem;
   box-sizing: border-box;
   display: flex;

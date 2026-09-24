@@ -75,15 +75,6 @@ const Contact = () => {
   const [showToast, setShowToast] = useState(false);
   const sectionRef = useRef(null);
 
-  // Parallax scroll for Contact section
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start']
-  });
-
-  const contentX = useTransform(scrollYProgress, [0.1, 0.45], [-40, 0]);
-  const stageX = useTransform(scrollYProgress, [0.1, 0.45], [40, 0]);
-
   const serviceOptions = [
     { value: 'web', label: 'Web Platform Development' },
     { value: 'mobile', label: 'Mobile Application Engineering' },
@@ -177,7 +168,7 @@ const Contact = () => {
         {/* 2-Column Grid: Form & Info Left, Typing Keyboard Interactive Demo Right */}
         <div className="contact-stage-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '3.5rem', alignItems: 'center' }}>
           {/* Left Column: Form & Cards */}
-          <motion.div style={{ x: contentX }}>
+          <div>
             <div className="contact-info" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
               <Reveal delay={0.1}>
                 <div className="ci-card" style={{
@@ -323,10 +314,10 @@ const Contact = () => {
                 </AiButton>
               </form>
             </Reveal>
-          </motion.div>
+          </div>
 
           {/* Right Column: Interactive Typing Keyboard */}
-          <motion.div style={{ x: stageX }} className="flex items-center justify-center min-h-[480px]">
+          <div className="flex items-center justify-center min-h-[380px] overflow-hidden">
             <TypingKeyboard
               autoTypeText="Nirmanam Solutions. High-performance web applications & modern digital software architecture. Built with precision and speed.        "
               typingSpeed={[40, 110]}
@@ -334,9 +325,10 @@ const Contact = () => {
               accentColor="#a855f7"
               secondaryAccent="#c084fc"
             />
-          </motion.div>
+          </div>
         </div>
       </div>
+
 
       {/* Toast Alert */}
       <div className={`toast ${showToast ? 'show' : ''}`}>
