@@ -1,0 +1,22 @@
+{
+  "name": "Nirmanam Solutions",
+  "short_name": "Nirmanam",
+  "description": "Nirmanam Solutions delivers world-class, premium digital products and software solutions.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

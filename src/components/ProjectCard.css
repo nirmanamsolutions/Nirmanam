@@ -16,15 +16,11 @@
   transform: translateZ(0);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background-color 0.3s ease;
   will-change: transform;
+  contain: layout paint;
 }
 
-[data-theme='light'] .portfolio-card {
-  --bg: #ffffff;
-  --title-color-hover: #0f172a;
-  --text-color: #475569;
-  --button-color: #f1f5f9;
-  --button-color-hover: #e2e8f0;
-}
+
+
 
 /* Hardware accelerated card shadow on hover */
 .portfolio-card::after {
@@ -237,15 +233,29 @@
   .portfolio-card {
     height: auto;
     width: 100%;
-    max-width: 22rem;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   
   .portfolio-card::before {
     display: none;
   }
   
-  .portfolio-card > img {
-    height: 14.5rem;
+  .portfolio-card .pc-img-container {
+    height: 13.5rem;
+    width: 100%;
+    border-radius: 1.25rem;
+  }
+
+  .portfolio-card .pc-img-container.fit-contain {
+    padding: 1rem;
+  }
+  
+  .portfolio-card-img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 1.25rem;
   }
   
   .portfolio-card > section {
@@ -255,7 +265,9 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 1.25rem 1rem;
+    padding: 1.15rem 0.85rem;
+    box-sizing: border-box;
+    margin-top: 0.5rem;
   }
   
   .portfolio-card h4,
@@ -267,7 +279,21 @@
   }
   
   .portfolio-card .pc-card-row {
-    padding-top: 1rem;
+    padding-top: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .portfolio-slide {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .portfolio-card {
+    width: 100%;
+    max-width: 100%;
   }
 }
 

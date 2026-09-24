@@ -24,47 +24,23 @@
   --accent-light-glow: rgba(192, 132, 252, 0.2);
 
   /* Liquid Glass Design System Variables - Dark Mode (21st.dev Ultra Liquid Specular Glass) */
-  --glass-bg: rgba(13, 7, 28, 0.45);
-  --glass-border: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(168, 85, 247, 0.25) 50%, rgba(192, 132, 252, 0.08) 100%);
+  --glass-bg: linear-gradient(135deg, rgba(16, 9, 36, 0.92) 0%, rgba(8, 4, 20, 0.96) 100%);
+  --glass-border: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(168, 85, 247, 0.22) 50%, rgba(192, 132, 252, 0.08) 100%);
   --glass-shadow:
     0 30px 60px -12px rgba(0, 0, 0, 0.75),
     0 18px 36px -18px rgba(168, 85, 247, 0.35),
-    inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.3),
     inset 0 -1.5px 1px 0 rgba(0, 0, 0, 0.6);
-  --glass-bg-hover: rgba(20, 10, 42, 0.65);
+  --glass-bg-hover: linear-gradient(135deg, rgba(26, 14, 52, 0.95) 0%, rgba(14, 7, 30, 0.98) 100%);
   --glass-border-hover: rgba(232, 121, 249, 0.55);
   --glass-shadow-hover:
     0 35px 80px -15px rgba(168, 85, 247, 0.45),
     0 0 45px rgba(192, 132, 252, 0.35),
-    inset 0 2px 2px 0 rgba(255, 255, 255, 0.6),
+    inset 0 2px 2px 0 rgba(255, 255, 255, 0.5),
     inset 0 -1.5px 1px 0 rgba(0, 0, 0, 0.5);
 }
 
-[data-theme='light'] {
-  /* Theme variables - Light Lavender & Purple Mode */
-  --bg-primary: #fcfaff;
-  --bg-secondary: #ffffff;
-  --bg-tertiary: #f3e8ff;
-  --text-primary: #1e1b4b;
-  --text-secondary: #5b21b6;
-  --text-muted: #7c3aed;
-  --border-color: rgba(124, 58, 237, 0.08);
-  --border-hover: rgba(124, 58, 237, 0.18);
 
-  --accent-indigo: #9333ea;
-  --accent-cyan: #7e22ce;
-  --accent-gold: #c084fc;
-  --accent-glow: rgba(147, 51, 234, 0.1);
-  --accent-light-glow: rgba(126, 34, 206, 0.1);
-
-  /* Liquid Glass Variables - Light Mode */
-  --glass-bg: rgba(255, 255, 255, 0.65);
-  --glass-border: rgba(147, 51, 234, 0.2);
-  --glass-shadow: 0 20px 45px rgba(147, 51, 234, 0.12), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95);
-  --glass-bg-hover: rgba(255, 255, 255, 0.88);
-  --glass-border-hover: rgba(147, 51, 234, 0.4);
-  --glass-shadow-hover: 0 25px 60px rgba(147, 51, 234, 0.25), inset 0 2px 2px rgba(255, 255, 255, 1);
-}
 
 /* Reset & Base Styles */
 * {
@@ -104,7 +80,6 @@ input,
 select,
 textarea,
 .btn,
-.theme-toggle-btn,
 .custom-select-trigger,
 .custom-select-option {
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
@@ -140,38 +115,7 @@ body {
   background-position: center;
 }
 
-[data-theme='light'] body {
-  background-image:
-    linear-gradient(rgba(79, 70, 229, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(79, 70, 229, 0.02) 1px, transparent 1px);
-  background-size: 60px 60px;
-  background-position: center;
-}
 
-/* Decorative subtle glows in Light Mode to fill negative space */
-[data-theme='light'] section::before {
-  content: '';
-  position: absolute;
-  top: 10%;
-  left: 15%;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(79, 70, 229, 0.035) 0%, transparent 70%);
-  z-index: 0;
-  pointer-events: none;
-}
-
-[data-theme='light'] section::after {
-  content: '';
-  position: absolute;
-  bottom: 10%;
-  right: 15%;
-  width: 450px;
-  height: 450px;
-  background: radial-gradient(circle, rgba(8, 145, 178, 0.03) 0%, transparent 70%);
-  z-index: 0;
-  pointer-events: none;
-}
 
 a {
   color: inherit;
@@ -609,25 +553,7 @@ section {
   transform: rotate(-45deg) translate(4px, -4px);
 }
 
-/* Theme Switcher Button */
-.theme-toggle-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid var(--border-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-primary);
-  background-color: rgba(255, 255, 255, 0.02);
-  transition: transform 0.2s ease, border-color 0.2s ease;
-}
 
-.theme-toggle-btn:hover {
-  border-color: var(--text-primary);
-  transform: rotate(15deg);
-}
 
 /* Hero Section */
 .hero {
@@ -1205,10 +1131,7 @@ section {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-[data-theme='light'] .form-group input,
-[data-theme='light'] .form-group textarea {
-  background-color: rgba(15, 23, 42, 0.02);
-}
+
 
 .form-group select {
   display: none;
@@ -1231,9 +1154,7 @@ section {
   transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
-[data-theme='light'] .custom-select-trigger {
-  background-color: rgba(15, 23, 42, 0.02);
-}
+
 
 .custom-select-trigger:focus,
 .custom-select-trigger.active {
@@ -1275,9 +1196,7 @@ section {
   color: var(--text-primary);
 }
 
-[data-theme='light'] .custom-select-option:hover {
-  background-color: rgba(15, 23, 42, 0.04);
-}
+
 
 .custom-select-option.selected {
   color: var(--accent-indigo) !important;
@@ -1493,13 +1412,7 @@ section {
   }
 }
 
-.desktop-only-theme {
-  display: flex !important;
-}
 
-.mobile-only-theme {
-  display: none !important;
-}
 
 @media (min-width: 1101px) {
   .mobile-controls {
@@ -1528,13 +1441,7 @@ section {
     display: none;
   }
 
-  .desktop-only-theme {
-    display: none !important;
-  }
 
-  .mobile-only-theme {
-    display: flex !important;
-  }
 }
 
 @media (max-width: 768px) {
@@ -2397,4 +2304,183 @@ section {
     scroll-snap-type: x mandatory;
     padding-bottom: 1rem;
   }
-}
+}
+
+/* ==================== MASTER 60FPS & 100% RESPONSIVE ENGINE ==================== */
+
+/* Zero Horizontal Overflow Safeguard */
+html, body {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+}
+
+/* Hardware Acceleration & CSS Layer Containment across Animated Components */
+.service-card-wrapper,
+.portfolio-card,
+.about-value-card,
+.timeline-card,
+.contact-form,
+.hero-spline-section,
+.stage-container,
+.tk-container {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  contain: layout paint;
+}
+
+/* Responsive About Grid Container */
+.about-grid-container {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 2.5rem;
+  align-items: center;
+}
+
+/* Global Container Scaling */
+.container {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 1.75rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .about-grid-container {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.15rem !important;
+  }
+
+  .navbar-container.scrolled,
+  .mobile-menu-overlay,
+  .mobile-menu-link,
+  .timeline-card,
+  .service-card-wrapper,
+  .contact-form,
+  .scroll-to-top,
+  .about-value-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: rgba(13, 9, 26, 0.94) !important;
+  }
+
+  /* Responsive Mobile Typography */
+  h1, .hero-title {
+    font-size: clamp(1.85rem, 7vw, 2.75rem) !important;
+    line-height: 1.22 !important;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 5.5vw, 2.1rem) !important;
+    line-height: 1.25 !important;
+  }
+
+  p {
+    font-size: clamp(0.85rem, 3.5vw, 0.95rem) !important;
+  }
+
+  .section-header {
+    margin-bottom: 2rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.85rem !important;
+  }
+
+  .hero-actions-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-actions-group .btn {
+    width: 100%;
+  }
+}
+
+/* ==================== AWWWARDS 60FPS SCROLL PERFORMANCE OPTIMIZATIONS ==================== */
+
+/* 1. Hardware containment for cards & grid layout containers */
+.service-card-wrapper,
+.portfolio-card,
+.about-bento-card,
+.timeline-card,
+.contact-form,
+.about-value-card {
+  contain: layout paint;
+  will-change: transform;
+}
+
+/* 2. Dynamic Liquid Dark Glass optimization during active scrolling */
+body.is-scrolling .service-card-wrapper,
+body.is-scrolling .portfolio-card,
+body.is-scrolling .about-bento-card,
+body.is-scrolling .timeline-card,
+body.is-scrolling .contact-form,
+body.is-scrolling .about-value-card {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: linear-gradient(135deg, rgba(20, 12, 40, 0.92) 0%, rgba(10, 5, 22, 0.96) 100%) !important;
+  border-color: rgba(168, 85, 247, 0.25) !important;
+}
+
+/* ==================== MOBILE WEB 60FPS PERFORMANCE SPEC ==================== */
+@media (max-width: 768px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Disable dynamic backdrop-filter blurs completely on mobile GPUs to eliminate mobile frame drops */
+  .service-card-wrapper,
+  .portfolio-card,
+  .about-value-card,
+  .contact-form,
+  .timeline-card,
+  .navbar-container,
+  .mobile-menu-overlay {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Force hardware layer isolation on all mobile cards */
+  .service-card-wrapper,
+  .portfolio-card,
+  .about-value-card,
+  .contact-form,
+  .timeline-card,
+  .hero-spline-canvas,
+  canvas {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform;
+    contain: layout paint;
+  }
+
+  /* Premium high-density liquid dark glass for mobile displays */
+  .service-card-wrapper,
+  .portfolio-card,
+  .about-value-card,
+  .contact-form,
+  .timeline-card,
+  .navbar-container.scrolled {
+    background: linear-gradient(135deg, rgba(16, 9, 36, 0.96) 0%, rgba(8, 4, 20, 0.98) 100%) !important;
+    border: 1px solid rgba(168, 85, 247, 0.25) !important;
+  }
+}
+
+
+
+

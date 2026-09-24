@@ -3,91 +3,120 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
-import ParticleCanvas from './animations/ParticleCanvas';
 import { Component as AiLoader } from './components/ui/ai-loader';
 import { ArrowUp } from 'lucide-react';
+import NotFound from './components/NotFound';
+import FpsDiagnostics from './components/FpsDiagnostics';
+import ParticleCanvas from './animations/ParticleCanvas';
 
-// Lazy-loaded heavy below-the-fold sections for instant initial bundle boot
-const About = lazy(() => import('./components/About'));
-const Services = lazy(() => import('./components/Services'));
-const Portfolio = lazy(() => import('./components/Portfolio'));
-const HowWeWork = lazy(() => import('./components/HowWeWork'));
-const Contact = lazy(() => import('./components/Contact'));
-
-// Zero-CLS Skeleton Section Placeholder
-const SectionSkeleton = ({ height = '600px', id }) => (
-  <section id={id} style={{ minHeight: height, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-    <div style={{ opacity: 0.12, width: '90%', maxWidth: '1200px', height: '70%', borderRadius: '24px', background: 'var(--border-color, rgba(255,255,255,0.05))', animation: 'pulse 1.8s ease-in-out infinite' }} />
-  </section>
-);
+import About from './components/About';
+import Services from './components/Services';
+import Portfolio from './components/Portfolio';
+import HowWeWork from './components/HowWeWork';
+import Contact from './components/Contact';
 
 function App() {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [loadedModelsCount, setLoadedModelsCount] = useState(0);
+  const [is404, setIs404] = useState(() => typeof window !== 'undefined' && window.location.pathname !== '/' && window.location.pathname !== '');
 
-  // Total required live 3D models (Hero = 1)
-  const requiredModelsCount = 1;
-
-  // 3D Model Loading Coordinator Gate: Loading screen does NOT end until all 3D models are rendered
+  // Complete Asset & 3D Model Readiness Gate Coordinator
   useEffect(() => {
+    let isMounted = true;
+    let splineReady = false;
+    let fontsReady = false;
+    let windowLoaded = false;
+
+    const checkAllReady = () => {
+      if (splineReady && fontsReady && (windowLoaded || document.readyState === 'complete')) {
+        setTimeout(() => {
+          if (isMounted) setIsInitialLoading(false);
+        }, 400);
+      }
+    };
+
     const handleModelReady = () => {
-      setLoadedModelsCount((prev) => prev + 1);
+      splineReady = true;
+      checkAllReady();
     };
 
     window.addEventListener('spline-model-ready', handleModelReady);
 
-    // Safety fallback timer (max 10s window so network delay never permanently freezes)
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        fontsReady = true;
+        checkAllReady();
+      }).catch(() => {
+        fontsReady = true;
+        checkAllReady();
+      });
+    } else {
+      fontsReady = true;
+    }
+
+    if (document.readyState === 'complete') {
+      windowLoaded = true;
+      checkAllReady();
+    } else {
+      const handleLoad = () => {
+        windowLoaded = true;
+        checkAllReady();
+      };
+      window.addEventListener('load', handleLoad);
+    }
+
+    // Safety fallback (9s) to prevent frozen UI on degraded network
     const safetyTimer = setTimeout(() => {
-      setIsInitialLoading(false);
-    }, 10000);
+      if (isMounted) setIsInitialLoading(false);
+    }, 9000);
 
     return () => {
+      isMounted = false;
       window.removeEventListener('spline-model-ready', handleModelReady);
       clearTimeout(safetyTimer);
     };
   }, []);
 
-  // When all required 3D models report ready, trigger smooth 60fps fade out
-  useEffect(() => {
-    if (loadedModelsCount >= requiredModelsCount) {
-      const timer = setTimeout(() => {
-        setIsInitialLoading(false);
-      }, 400);
-      return () => clearTimeout(timer);
-    }
-  }, [loadedModelsCount, requiredModelsCount]);
-
-  const loadingProgress = Math.min(
-    100,
-    Math.round((loadedModelsCount / requiredModelsCount) * 100)
-  );
-
-  // Read initial theme from localStorage or system preference
-  const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem('Nirmanam Solutions-theme');
-    if (saved) return saved;
-    const preference = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-    return preference;
-  });
-
   const [showScrollTop, setShowScrollTop] = useState(false);
 
+  // Tab Visibility Title Manager (Changes title only when user switches away from tab)
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('Nirmanam Solutions-theme', theme);
-  }, [theme]);
+    const mainTitle = 'Nirmanam Solutions – Premium Software Engineering & Design Studio';
+    const awayTitle = 'We miss you :( | Nirmanam Solutions';
 
-  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        document.title = awayTitle;
+      } else {
+        document.title = mainTitle;
+      }
+    };
+
+    let scrollTimer = null;
+    const body = document.body;
+
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 400);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
-  };
+      if (!body.classList.contains('is-scrolling')) {
+        body.classList.add('is-scrolling');
+      }
+
+      if (scrollTimer) clearTimeout(scrollTimer);
+
+      scrollTimer = setTimeout(() => {
+        body.classList.remove('is-scrolling');
+      }, 150);
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimer) clearTimeout(scrollTimer);
+    };
+  }, []);
 
   const scrollToContact = () => {
     const contactSection = document.getElementById('contact');
@@ -103,16 +132,20 @@ function App() {
     });
   };
 
+  if (is404) {
+    return <NotFound onBackHome={() => { window.history.pushState({}, '', '/'); setIs404(false); }} />;
+  }
+
   return (
     <>
-      {/* Initial Liquid Glass Preloader - Holds until 100% 3D Models Rendered */}
+      {/* Initial Preloader */}
       <AnimatePresence mode="wait">
         {isInitialLoading && (
           <motion.div
             key="initial-app-loader"
             initial={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.04, filter: 'blur(12px)' }}
-            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             style={{
               position: 'fixed',
               top: 0,
@@ -127,48 +160,29 @@ function App() {
               justifyContent: 'center',
               pointerEvents: 'auto',
               backdropFilter: 'blur(32px) saturate(190%)',
-              WebkitBackdropFilter: 'blur(32px) saturate(190%)',
-              willChange: 'transform, opacity, filter',
-              transform: 'translate3d(0, 0, 0)',
-              backfaceVisibility: 'hidden'
+              WebkitBackdropFilter: 'blur(32px) saturate(190%)'
             }}
           >
-            <AiLoader text="Nirmanam Solutions" progress={loadingProgress} />
+            <AiLoader text="Nirmanam Solutions" />
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Background Interactive Network Mesh */}
       <div className="particle-container">
-        <ParticleCanvas theme={theme} />
+        <ParticleCanvas />
       </div>
 
       {/* Main Page Layout */}
-      {!isInitialLoading && (
-        <Navbar theme={theme} toggleTheme={toggleTheme} onLetsTalkClick={scrollToContact} isReady={!isInitialLoading} />
-      )}
+      <Navbar onLetsTalkClick={scrollToContact} isReady={!isInitialLoading} />
+
       <main>
         <Hero onLetsTalkClick={scrollToContact} isReady={!isInitialLoading} />
-
-        <Suspense fallback={<SectionSkeleton id="about" height="650px" />}>
-          <About />
-        </Suspense>
-
-        <Suspense fallback={<SectionSkeleton id="services" height="750px" />}>
-          <Services />
-        </Suspense>
-
-        <Suspense fallback={<SectionSkeleton id="portfolio" height="680px" />}>
-          <Portfolio />
-        </Suspense>
-
-        <Suspense fallback={<SectionSkeleton id="process" height="750px" />}>
-          <HowWeWork />
-        </Suspense>
-
-        <Suspense fallback={<SectionSkeleton id="contact" height="650px" />}>
-          <Contact />
-        </Suspense>
+        <About />
+        <Services />
+        <Portfolio />
+        <HowWeWork />
+        <Contact />
       </main>
       <Footer />
 
@@ -180,8 +194,12 @@ function App() {
       >
         <ArrowUp size={20} />
       </button>
+
+      {/* FPS Diagnostic HUD & Performance Monitor */}
+      <FpsDiagnostics />
     </>
   );
 }
 
 export default App;
+

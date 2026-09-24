@@ -1,0 +1,59 @@
+# Nirmanam Solutions - Complete System Documentation
+
+> Nirmanam Solutions is a premier software engineering & digital product design studio located in Pune, Maharashtra, India. We architect high-performance web systems, native mobile applications, and cloud software infrastructure for clients worldwide.
+
+## Company Overview
+- Organization Name: Nirmanam Solutions
+- Operating Model: Custom Software Development & Engineering Services
+- Target Audience: Tech Startups, Enterprise Companies, Indian Founders, Global Tech Products
+- Location: Pune, Maharashtra, India
+- Contact Email: nirmanamsolutions@gmail.com
+- Web Domain: https://nirmanamsolutions.netlify.app
+
+
+## Engineering Services Breakdown
+
+### 1. Web Platform Engineering
+We design and deploy modern web platforms engineered for maximum speed, accessibility, and conversion.
+- Frameworks: React, Next.js, Vite, TypeScript
+- Performance: Sub-second First Contentful Paint, 100/100 Core Web Vitals targets
+- Features: Server-side rendering (SSR), static site generation (SSG), WebGL 3D interactive canvases, micro-frontend architecture.
+
+### 2. Mobile Systems Engineering
+Cross-platform iOS and Android mobile software engineered for fluid 60fps frame rates and offline resilience.
+- Frameworks: React Native, Flutter, Expo, Native iOS/Android modules
+- Architecture: Encrypted SQLite/MMKV local persistence, offline sync queues, push notification gateways, hardware camera/sensor access.
+
+### 3. Backend & Distributed API Systems
+Scalable cloud backend services designed for fault tolerance and high concurrent throughput.
+- Tech Stack: Node.js, Express, Go, Python, PostgreSQL, MongoDB, Redis, GraphQL, RESTful APIs
+- Security: OAuth2 authentication, JWT sessions, rate-limiting, OWASP security hardening, role-based access control (RBAC).
+
+### 4. Cloud Infrastructure & DevOps
+Production-grade deployment pipelines and server infrastructure management.
+- Infrastructure: AWS (EC2, S3, CloudFront, ECS), Vercel, Docker, Kubernetes, Nginx
+- CI/CD: Automated GitHub Actions pipelines, zero-downtime rolling updates, automated vulnerability scanning.
+
+### 5. UI/UX Design & System Architecture
+Human-centered interface engineering and cohesive brand design systems.
+- Deliverables: Comprehensive Figma token design systems, interactive prototypes, micro-animation designs, design-to-code component libraries.
+
+## Selected Case Studies
+
+### Case Study 1: Sravase Dairy Management System
+- Industry: AgriTech & Supply Chain
+- Scope: End-to-end mobile and backend solution for dairy farmers and collection hubs.
+- Key Capabilities: Real-time milk collection metrics, automated FAT/SNF formula payout calculations, offline-ready mobile interface, multi-role analytics dashboard.
+- Tech Stack: React Native, Node.js, Express, MongoDB Atlas, Firebase Cloud Messaging.
+
+### Case Study 2: SkillSutra E-Learning Platform
+- Industry: EdTech & Content Delivery
+- Scope: High-security LMS web application.
+- Key Capabilities: Encrypted HLS video streaming, automated DRM download restrictions, integrated Stripe payment gateway, real-time student progress tracking.
+- Tech Stack: React, Node.js, Express, MongoDB, HLS Video Encryption, Stripe API.
+
+## Code Quality & Engineering Standards
+1. Modular Architecture: Strict separation of concerns, clean component trees, reusable UI design tokens.
+2. Performance Auditing: Zero unhandled memory leaks, optimized lazy-loaded JS bundles, asset minification, image compression (WebP/AVIF).
+3. Accessibility (a11y): Semantic HTML5 tags, screen-reader compatibility, keyboard navigation, high-contrast color systems.
+4. Security Hardened: Strict CORS headers, XSS prevention, sanitized input validation, environment variable isolation.

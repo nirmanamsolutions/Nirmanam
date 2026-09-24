@@ -108,9 +108,10 @@ const loaderStyles = `
 
 interface ComponentProps {
   text?: string;
+  progress?: number | null;
 }
 
-export const Component: React.FC<ComponentProps> = ({ text = "Nirmanam Solutions" }) => {
+export const Component: React.FC<ComponentProps> = ({ text = "Nirmanam Solutions", progress: _progress = null }) => {
   const parts = text.split(" ");
   const mainWord = parts[0] || "Nirmanam";
   const subWord = parts.slice(1).join(" ") || "Solutions";

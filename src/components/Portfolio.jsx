@@ -95,7 +95,7 @@ const Portfolio = () => {
 
           <div className="portfolio-slider-container">
             <div className="portfolio-slider-track" ref={sliderRef}>
-              <AnimatePresence mode="popLayout">
+              <AnimatePresence>
                 {filteredProjects.map((p) => (
                   <motion.div
                     className="portfolio-slide"

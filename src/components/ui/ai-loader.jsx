@@ -106,7 +106,8 @@ const loaderStyles = `
 }
 `;
 
-export const Component = ({ text = "Nirmanam Solutions", progress = null }) => {
+export const Component = ({ text = "Nirmanam Solutions", _progress = null }) => {
+
   const parts = text.split(" ");
   const mainWord = parts[0] || "Nirmanam";
   const subWord = parts.slice(1).join(" ") || "Solutions";
@@ -145,7 +146,7 @@ export const Component = ({ text = "Nirmanam Solutions", progress = null }) => {
           )}
 
         </div>
-        <div className="loader">
+        <div className="loader" >
           <div className="loader-pulse-ring" />
         </div>
       </div>

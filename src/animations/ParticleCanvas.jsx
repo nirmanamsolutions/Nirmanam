@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-const ParticleCanvas = ({ theme }) => {
+const ParticleCanvas = () => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -11,14 +11,35 @@ const ParticleCanvas = ({ theme }) => {
 
     let animationFrameId;
     let particles = [];
+    let isVisible = true;
+    const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || ('ontouchstart' in window));
+
+    // IntersectionObserver to pause requestAnimationFrame completely when canvas is off-screen
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (!isVisible && animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        } else if (isVisible && !animationFrameId) {
+          animate();
+        }
+      },
+      { threshold: 0.05 }
+    );
+
+    if (canvas.parentElement) {
+      observer.observe(canvas.parentElement);
+    }
 
     const resizeCanvas = () => {
+      if (!canvas.parentElement) return;
       canvas.width = canvas.parentElement.offsetWidth;
       canvas.height = canvas.parentElement.offsetHeight;
     };
 
     resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('resize', resizeCanvas, { passive: true });
 
     class Particle {
       constructor() {
@@ -28,18 +49,11 @@ const ParticleCanvas = ({ theme }) => {
       reset() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 1.6 + 0.4;
-        this.speedX = (Math.random() - 0.5) * 0.35;
-        this.speedY = (Math.random() - 0.5) * 0.35;
+        this.size = Math.random() * 1.5 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.speedY = (Math.random() - 0.5) * 0.3;
         this.opacity = Math.random() * 0.3 + 0.15;
-        
-        // Colors adapt to dark/light theme (Electric Purple & Violet accents)
-        const isDark = theme === 'dark';
-        if (isDark) {
-          this.color = Math.random() > 0.5 ? '168, 85, 247' : '216, 180, 254'; // Violet / Light Purple
-        } else {
-          this.color = Math.random() > 0.5 ? '147, 51, 234' : '192, 132, 252'; // Royal Purple / Bright Violet
-        }
+        this.color = Math.random() > 0.5 ? '168, 85, 247' : '216, 180, 254';
       }
 
       update() {
@@ -61,7 +75,8 @@ const ParticleCanvas = ({ theme }) => {
 
     const init = () => {
       particles = [];
-      const count = Math.min(Math.floor((canvas.width * canvas.height) / 11000), 100);
+      const maxParticles = isMobile ? 10 : 28;
+      const count = Math.min(Math.floor((canvas.width * canvas.height) / 22000), maxParticles);
       for (let i = 0; i < count; i++) {
         particles.push(new Particle());
       }
@@ -70,18 +85,19 @@ const ParticleCanvas = ({ theme }) => {
     init();
 
     const connectParticles = () => {
-      const isDark = theme === 'dark';
-      const lineColor = isDark ? '168, 85, 247' : '147, 51, 234';
-      
+      if (isMobile) return;
+      const lineColor = '168, 85, 247';
+
       for (let a = 0; a < particles.length; a++) {
         for (let b = a + 1; b < particles.length; b++) {
           const dx = particles[a].x - particles[b].x;
           const dy = particles[a].y - particles[b].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+          const distSq = dx * dx + dy * dy;
 
-          if (dist < 110) {
+          if (distSq < 8100) {
+            const dist = Math.sqrt(distSq);
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(${lineColor}, ${0.07 * (1 - dist / 110)})`;
+            ctx.strokeStyle = `rgba(${lineColor}, ${0.05 * (1 - dist / 90)})`;
             ctx.lineWidth = 0.5;
             ctx.moveTo(particles[a].x, particles[a].y);
             ctx.lineTo(particles[b].x, particles[b].y);
@@ -92,6 +108,7 @@ const ParticleCanvas = ({ theme }) => {
     };
 
     const animate = () => {
+      if (!isVisible) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach((p) => {
         p.update();
@@ -105,11 +122,14 @@ const ParticleCanvas = ({ theme }) => {
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
-      cancelAnimationFrame(animationFrameId);
+      observer.disconnect();
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
-  }, [theme]);
+  }, []);
 
   return <canvas ref={canvasRef} style={{ display: 'block', width: '100%', height: '100%' }} />;
 };
 
 export default ParticleCanvas;
+
+

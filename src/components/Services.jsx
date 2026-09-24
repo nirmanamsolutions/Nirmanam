@@ -20,14 +20,23 @@ const cardVariants = {
 
 const ServiceCard = ({ srv, index, isHero = false }) => {
   const cardRef = useRef(null);
-  const [mousePos, setMousePos] = useState({ x: '50%', y: '50%' });
+  const rafRef = useRef(null);
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = `${((e.clientX - rect.left) / rect.width) * 100}%`;
-    const y = `${((e.clientY - rect.top) / rect.height) * 100}%`;
-    setMousePos({ x, y });
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+
+    rafRef.current = requestAnimationFrame(() => {
+      if (!cardRef.current) return;
+      const rect = cardRef.current.getBoundingClientRect();
+      const x = `${((clientX - rect.left) / rect.width) * 100}%`;
+      const y = `${((clientY - rect.top) / rect.height) * 100}%`;
+      cardRef.current.style.setProperty('--mouse-x', x);
+      cardRef.current.style.setProperty('--mouse-y', y);
+    });
   };
 
   return (
@@ -40,10 +49,6 @@ const ServiceCard = ({ srv, index, isHero = false }) => {
       ref={cardRef}
       onMouseMove={handleMouseMove}
       className={`service-card-wrapper ${isHero ? 'bento-hero' : ''}`}
-      style={{
-        '--mouse-x': mousePos.x,
-        '--mouse-y': mousePos.y
-      }}
     >
       <div className="service-spotlight-glow" />
 
