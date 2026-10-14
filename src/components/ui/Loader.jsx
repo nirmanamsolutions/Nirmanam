@@ -1,161 +1,147 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BrandLogo } from '../common/BrandLogo';
 import './Loader.css';
 
-export function Loader({ onFinish }) {
-  // exitPhase:
-  // 0 = Full Visible
-  // 1 = Text Fading Out
-  // 2 = 3D Loader Box Fading Out
-  // 3 = Background Dissolving & Website Revealing
-  // 4 = Unmounted
-  const [exitPhase, setExitPhase] = useState(0);
+/**
+ * Loader — Nirmanam Solutions
+ * ────────────────────────────
+ * Props:
+ *   assetsReady  boolean  — signalled by App.jsx when videos + images are loaded
+ *   onFinish     fn       — called once the exit animation completes
+ *
+ * Phase state machine:
+ *   0  fully visible
+ *   1  brand text fades up + out
+ *   2  3D box animation scales + fades out
+ *   3  background overlay dissolves, website fades in
+ *   4  fully unmounted
+ */
+export function Loader({ assetsReady, onFinish }) {
+  const [phase, setPhase] = useState(0);
   const onFinishRef = useRef(onFinish);
+  const exitStarted = useRef(false);
 
+  // Keep ref fresh without triggering re-renders
+  useEffect(() => { onFinishRef.current = onFinish; });
+
+  // ── Exit sequence fires once assets are ready ─────────────────────────────
   useEffect(() => {
-    onFinishRef.current = onFinish;
-  });
+    if (!assetsReady || exitStarted.current) return;
+    exitStarted.current = true;
 
-  useEffect(() => {
-    // Step 1: Start fading out text
-    const timer1 = setTimeout(() => {
-      setExitPhase(1);
-    }, 1400);
+    // Staggered exit: text → box → overlay → unmount
+    const t1 = setTimeout(() => setPhase(1), 120);
+    const t2 = setTimeout(() => setPhase(2), 320);
+    const t3 = setTimeout(() => {
+      setPhase(3);
+      onFinishRef.current?.();
+    }, 560);
+    const t4 = setTimeout(() => setPhase(4), 940);
 
-    // Step 2: Next fade out 3D Loader Box
-    const timer2 = setTimeout(() => {
-      setExitPhase(2);
-    }, 1620);
+    return () => [t1, t2, t3, t4].forEach(clearTimeout);
+  }, [assetsReady]);
 
-    // Step 3: Next fade out background overlay & trigger website reveal
-    const timer3 = setTimeout(() => {
-      setExitPhase(3);
-      if (onFinishRef.current) onFinishRef.current();
-    }, 1870);
+  if (phase === 4) return null;
 
-    // Step 4: Fully unmount loader overlay
-    const timer4 = setTimeout(() => {
-      setExitPhase(4);
-    }, 2200);
-
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-      clearTimeout(timer4);
-    };
-  }, []); // Run strictly ONCE on initial mount
-
-  if (exitPhase === 4) return null;
 
   return (
     <AnimatePresence>
-      {exitPhase < 4 && (
+      {phase < 4 && (
         <motion.div
-          key="staggered-loader-overlay"
+          key="loader-overlay"
           initial={{ opacity: 1 }}
           animate={{
-            opacity: exitPhase >= 3 ? 0 : 1,
-            filter: exitPhase >= 3 ? 'blur(16px)' : 'blur(0px)'
+            opacity: phase >= 3 ? 0 : 1,
+            filter: phase >= 3 ? 'blur(18px)' : 'blur(0px)',
           }}
-          transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.40, ease: [0.16, 1, 0.3, 1] }}
           style={{
             position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
+            inset: 0,
             zIndex: 99999,
-            backgroundColor: '#F2F1F0',
+            backgroundColor: '#F2F1F0',        // exact site bg-base
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             padding: '40px 20px',
-            pointerEvents: exitPhase >= 3 ? 'none' : 'all'
+            gap: 0,
+            pointerEvents: phase >= 3 ? 'none' : 'all',
           }}
         >
-          {/* Step 2: 3D Isometric Sliding Box Container (Fades second) */}
+
+          {/* ── 3D Isometric Box Animation ─────────────────────────────── */}
           <motion.div
             animate={{
-              opacity: exitPhase >= 2 ? 0 : 1,
-              scale: exitPhase >= 2 ? 0.85 : 1,
-              filter: exitPhase >= 2 ? 'blur(10px)' : 'blur(0px)'
+              opacity: phase >= 2 ? 0 : 1,
+              scale: phase >= 2 ? 0.84 : 1,
+              filter: phase >= 2 ? 'blur(10px)' : 'blur(0px)',
             }}
-            transition={{ duration: 0.26, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
             style={{
               height: '140px',
               width: '100%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              marginBottom: '50px',
-              position: 'relative'
+              marginBottom: '52px',
             }}
           >
             <div className="uiverse-boxes">
-              <div className="box">
-                <div />
-                <div />
-                <div />
-                <div />
-              </div>
-              <div className="box">
-                <div />
-                <div />
-                <div />
-                <div />
-              </div>
-              <div className="box">
-                <div />
-                <div />
-                <div />
-                <div />
-              </div>
-              <div className="box">
-                <div />
-                <div />
-                <div />
-                <div />
-              </div>
+              {[0, 1, 2, 3].map(i => (
+                <div key={i} className="box">
+                  <div /><div /><div /><div />
+                </div>
+              ))}
             </div>
           </motion.div>
 
-          {/* Step 1: Website Theme Matched Brand Typography & Badge (Fades first) */}
+          {/* ── Brand Text ──────────────────────────────────────────── */}
           <motion.div
             animate={{
-              opacity: exitPhase >= 1 ? 0 : 1,
-              y: exitPhase >= 1 ? -16 : 0,
-              filter: exitPhase >= 1 ? 'blur(6px)' : 'blur(0px)'
+              opacity: phase >= 1 ? 0 : 1,
+              y: phase >= 1 ? -20 : 0,
+              filter: phase >= 1 ? 'blur(8px)' : 'blur(0px)',
             }}
-            transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.26, ease: [0.16, 1, 0.3, 1] }}
             style={{
-              textAlign: 'center',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: '14px'
+              gap: '10px',
+              width: '100%',
+              maxWidth: '480px',
+              textAlign: 'center',
             }}
           >
-            {/* Website Brand Logo */}
-            <BrandLogo size={42} showText={true} textColor="#111111" text="Nirmanam Solutions" />
+            {/* Studio wordmark — text only, zero images */}
+            <div style={{
+              fontFamily: 'var(--font-quantico)',
+              fontWeight: 700,
+              fontSize: 'clamp(22px, 4.5vw, 28px)',
+              color: '#1a1c1e',
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              lineHeight: 1,
+              whiteSpace: 'nowrap',
+            }}>
+              NIRMANAM SOLUTIONS
+            </div>
 
-            {/* Subtitle Tagline */}
-            <div
-              style={{
-                fontSize: '12px',
-                fontFamily: "var(--font-quantico)",
-                fontWeight: 700,
-                color: '#0891b2',
-                letterSpacing: '0.22em',
-                textTransform: 'uppercase',
-                marginTop: '4px'
-              }}
-            >
+            {/* Tagline — single line, no wrap */}
+            <div style={{
+              fontFamily: 'var(--font-quantico)',
+              fontWeight: 700,
+              fontSize: '9.5px',
+              color: '#15BCDF',
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              whiteSpace: 'nowrap',
+            }}>
               PREMIUM SOFTWARE ENGINEERING STUDIO
             </div>
           </motion.div>
+
         </motion.div>
       )}
     </AnimatePresence>

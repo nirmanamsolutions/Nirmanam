@@ -174,11 +174,11 @@ export const siteContent = {
       {
         id: "project-1",
         category: "mobile",
-        title: "Sravase Dairy Management System",
+        title: "Sarvasvaa Dairy Management System",
         subtitle: "Full-Stack Dairy Management Platform",
         description: "A full-stack dairy management platform for farmers, collection centers, and administrators featuring real-time milk collection, automated FAT/SNF-based payment calculation, analytics, and secure role-based dashboards.",
         tags: ["React Native", "Node.js", "Express.js", "MongoDB Atlas", "Firebase Cloud Messaging"],
-        image: "/project_sravase_dairy.png",
+        image: "/project_sarvasvaa_dairy.png",
         link: "https://play.google.com/store/apps/details?id=com.sarvasvaa.dairy",
         linkText: "View on Play Store"
       },
@@ -192,7 +192,19 @@ export const siteContent = {
         image: "/project_skillsutra.png",
         link: "https://skillsutra.netlify.app/",
         linkText: "Visit SkillSutra Live"
+      },
+      {
+        id: "project-3",
+        category: "web",
+        title: "Shivratna Kirana – Retail Store Management System",
+        subtitle: "Full-Stack Retail Stock, Billing & Ledger Platform",
+        description: "A complete offline-first retail management system built for a local Kirana store. Covers real-time stock tracking with low-stock alerts, a 4-step smart billing counter (Cash / UPI / Card / Katha), customer ledger with WhatsApp due reminders, bill history with PDF export, and Bluetooth thermal-printer receipt generation — all behind a secure admin login with 7-day session management. Fully bilingual (Marathi / English) UI.",
+        tags: ["React 19", "Vite", "Node.js", "Express.js", "MongoDB Atlas", "jsPDF", "node-cron"],
+        image: "/project_shivratna_kirana.png",
+        link: "https://regstore.vercel.app/",
+        linkText: "View Live Project"
       }
+
     ]
   },
 

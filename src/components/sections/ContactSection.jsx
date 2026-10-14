@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import { motion } from 'framer-motion';
 import { SectionHeader } from '../common/SectionHeader';
 import { ChamferCard } from '../common/ChamferCard';
@@ -20,20 +21,50 @@ export function ContactSection() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending]   = useState(false);
+  const [sendError, setSendError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({
-        name: '',
-        email: '',
-        solution: solutionsNeeded[0],
-        budget: budgetRanges[1],
-        objectives: ''
-      });
-    }, 4000);
+    setSending(true);
+    setSendError(null);
+
+    const templateParams = {
+      from_name    : formData.name,
+      from_email   : formData.email,
+      service_type : formData.solution,
+      budget_range : formData.budget,
+      message      : formData.objectives,
+    };
+
+    try {
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_CONTACT_TEMPLATE_ID,
+        templateParams,
+        { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY }
+      );
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setFormData({
+          name: '',
+          email: '',
+          solution: solutionsNeeded[0],
+          budget: budgetRanges[1],
+          objectives: ''
+        });
+      }, 4000);
+    } catch (err) {
+      console.error('[EmailJS] send error:', err);
+      setSendError(
+        err?.text ||
+        err?.message ||
+        'Failed to send. Please try emailing us directly.'
+      );
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -230,10 +261,37 @@ export function ContactSection() {
                 />
               </div>
 
-              <Button type="submit" variant="primary" style={{ width: '100%', padding: '14px 22px', marginTop: '6px' }}>
-                SUBMIT INQUIRY
+              <Button
+                type="submit"
+                variant="primary"
+                disabled={sending}
+                style={{
+                  width: '100%',
+                  padding: '14px 22px',
+                  marginTop: '6px',
+                  opacity: sending ? 0.7 : 1,
+                  cursor: sending ? 'not-allowed' : 'pointer'
+                }}
+              >
+                {sending ? 'TRANSMITTING…' : 'SUBMIT INQUIRY'}
               </Button>
+
+              {sendError && (
+                <div style={{
+                  marginTop: '8px',
+                  padding: '10px 14px',
+                  background: 'rgba(255,80,80,0.08)',
+                  border: '1px solid rgba(255,80,80,0.35)',
+                  color: '#ff6b6b',
+                  fontSize: '13px',
+                  fontFamily: 'var(--font-quantico)',
+                  lineHeight: 1.5
+                }}>
+                  ⚠ {sendError}
+                </div>
+              )}
             </form>
+
           )}
         </ChamferCard>
       </div>

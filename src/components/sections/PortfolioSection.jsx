@@ -143,29 +143,26 @@ export function PortfolioSection() {
                         style={{
                           position: 'relative',
                           width: '100%',
-                          height: '240px',
-                          backgroundColor: project.id === 'project-1' ? '#090d14' : '#0d111c',
+                          aspectRatio: '16 / 10',
+                          backgroundColor: '#0d1117',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          padding: project.id === 'project-1' ? '16px' : '0px',
+                          padding: '0px',
                           overflow: 'hidden'
                         }}
                       >
                         <motion.img
                           src={project.image}
                           alt={project.title}
-                          whileHover={{ scale: 1.05 }}
-                          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                          whileHover={{ scale: 1.04 }}
+                          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                           style={{
-                            maxWidth: '100%',
-                            maxHeight: '100%',
-                            width: project.id === 'project-1' ? 'auto' : '100%',
-                            height: project.id === 'project-1' ? 'auto' : '100%',
-                            objectFit: project.id === 'project-1' ? 'contain' : 'cover',
-                            objectPosition: 'top center',
-                            display: 'block',
-                            borderRadius: '4px'
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            objectPosition: 'center',
+                            display: 'block'
                           }}
                         />
                       </div>
